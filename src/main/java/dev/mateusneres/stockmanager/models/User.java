@@ -11,6 +11,7 @@ public class User {
 
     private UUID userID;
     private String name;
+    private String email;
     private String nonce;
     private String password;
 
