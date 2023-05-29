@@ -51,7 +51,7 @@ public class LoginController {
 
             loginScreen.dispose();
             StockController stockController = new StockController(user);
-            HomeScreen homeScreen = new HomeScreen(null, stockController.getPurchasesData());
+            HomeScreen homeScreen = new HomeScreen(null, stockController.getPurchasesDataTable());
             new HomeController(stockController, homeScreen);
         });
     }
