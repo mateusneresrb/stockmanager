@@ -102,7 +102,7 @@ public class SignUpScreen extends JFrame {
         contentPane.add(formPanel);
 
         setContentPane(contentPane);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(450, 400));
         setResizable(false);
         setFrameLocation(frameLocation);

@@ -1,5 +1,6 @@
 package dev.mateusneres.stockmanager.controllers;
 
+import dev.mateusneres.stockmanager.repositories.AuthRepository;
 import dev.mateusneres.stockmanager.utils.EmailValidator;
 import dev.mateusneres.stockmanager.views.LoginScreen;
 import dev.mateusneres.stockmanager.views.SignUpScreen;
@@ -12,9 +13,12 @@ import java.util.Arrays;
 public class LoginController {
 
     private final LoginScreen loginScreen;
+    private final AuthRepository authRepository;
 
     public LoginController(LoginScreen loginScreen) {
         this.loginScreen = loginScreen;
+        this.authRepository = new AuthRepository();
+
         handleActions();
     }
 
@@ -26,9 +30,9 @@ public class LoginController {
     private void onLoginButtonClicked() {
         loginScreen.getButton().addActionListener(e -> {
             String email = loginScreen.getEmailField().getText();
-            String password = Arrays.toString(loginScreen.getPasswordField().getPassword());
+            char[] password = loginScreen.getPasswordField().getPassword();
 
-            if (email.isEmpty() || password.isEmpty()) {
+            if (email.isEmpty() || password.length == 0) {
                 JOptionPane.showMessageDialog(loginScreen.getEmailField(), "Error: Unable to send with any of the fields empty!", "Empty field", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -38,7 +42,12 @@ public class LoginController {
                 return;
             }
 
-            System.out.println(email + " " + password);
+            boolean isLogged = authRepository.login(email, password);
+            if (!isLogged) {
+                JOptionPane.showMessageDialog(loginScreen.getEmailField(), "Error: Invalid email or password!", "Invalid email or password", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
         });
     }
 

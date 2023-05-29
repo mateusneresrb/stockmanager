@@ -1,5 +1,6 @@
 package dev.mateusneres.stockmanager.controllers;
 
+import dev.mateusneres.stockmanager.repositories.AuthRepository;
 import dev.mateusneres.stockmanager.utils.EmailValidator;
 import dev.mateusneres.stockmanager.views.LoginScreen;
 import dev.mateusneres.stockmanager.views.SignUpScreen;
@@ -12,9 +13,12 @@ import java.util.Arrays;
 public class RegisterController {
 
     private final SignUpScreen signUpScreen;
+    private final AuthRepository authRepository;
 
     public RegisterController(SignUpScreen signUpScreen) {
         this.signUpScreen = signUpScreen;
+        this.authRepository = new AuthRepository();
+
         handleActions();
     }
 
@@ -27,10 +31,10 @@ public class RegisterController {
         signUpScreen.getButton().addActionListener(e -> {
             String name = signUpScreen.getNameField().getText();
             String email = signUpScreen.getEmailField().getText();
-            String password = Arrays.toString(signUpScreen.getPasswordField().getPassword());
-            String confirmPassword = Arrays.toString(signUpScreen.getPasswordConfirmField().getPassword());
+            char[] password = signUpScreen.getPasswordField().getPassword();
+            char[] confirmPassword = signUpScreen.getPasswordConfirmField().getPassword();
 
-            if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            if (name.isEmpty() || email.isEmpty() || password.length == 0 || confirmPassword.length == 0) {
                 JOptionPane.showMessageDialog(signUpScreen.getEmailField(), "Error: Unable to send with any of the fields empty!", "Empty field", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -40,12 +44,18 @@ public class RegisterController {
                 return;
             }
 
-            if (!password.equals(confirmPassword)) {
+            if (!Arrays.equals(password, confirmPassword)) {
                 JOptionPane.showMessageDialog(signUpScreen.getEmailField(), "Error: Passwords do not match!", "Password mismatch", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            System.out.println(name + " " + email + " " + password + " " + confirmPassword);
+            boolean isRegistered = authRepository.register(name, email, password);
+
+            if (!isRegistered) {
+                JOptionPane.showMessageDialog(signUpScreen.getEmailField(), "An account with this email address already exists", "Invalid email", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
         });
     }
 

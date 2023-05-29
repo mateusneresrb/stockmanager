@@ -72,7 +72,7 @@ public class LoginScreen extends JFrame {
         contentPane.add(formPanel);
 
         setContentPane(contentPane);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(450, 400));
         setFrameLocation(frameLocation);
         setResizable(false);
