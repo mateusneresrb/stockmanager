@@ -27,6 +27,7 @@ dependencies {
     implementation 'com.jgoodies:jgoodies-forms:1.6.0'
     implementation 'org.swinglabs:swingx:1.6.1'
     implementation 'mysql:mysql-connector-java:8.0.33'
+    implementation 'at.favre.lib:bcrypt:0.10.2'
 }
 
 test {
