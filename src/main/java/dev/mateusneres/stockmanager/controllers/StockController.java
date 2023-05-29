@@ -41,9 +41,7 @@ public class StockController {
     }
 
 
-    public String[][] getPurchasesData() {
-        System.out.println("SIZE: " + purchaseProductList.size());
-
+    public String[][] getPurchasesDataTable() {
         String[][] data = new String[purchaseProductList.size()][6];
 
         for (int i = 0; i < purchaseProductList.size(); i++) {
@@ -54,6 +52,20 @@ public class StockController {
             data[i][3] = String.valueOf(purchaseProduct.getQuantity());
             data[i][4] = String.valueOf(purchaseProduct.getProduct().getPrice());
             data[i][5] = DateUtil.formatInstant(purchaseProduct.getPurchase().getPurchaseDate());
+        }
+
+        return data;
+    }
+
+    public String[][] getProductsDataTable(){
+        String[][] data = new String[productList.size()][4];
+
+        for(int i = 0; i < productList.size(); i++){
+            Product product = productList.get(i);
+            data[i][0] = String.valueOf(product.getId());
+            data[i][1] = product.getName();
+            data[i][2] = String.valueOf(product.getPrice());
+            data[i][3] = String.valueOf(product.getAmountAvailable());
         }
 
         return data;
