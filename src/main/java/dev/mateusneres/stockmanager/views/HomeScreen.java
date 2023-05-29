@@ -16,14 +16,15 @@ import java.awt.*;
 public class HomeScreen extends JFrame {
 
     private final String[] columnNames = {"ID", "Produto", "Supplier", "Quantity", "Price", "Date"};
-    private final JLabel appLogoLabel;
     @Getter
     private final JLabel logoutLabel;
     @Getter
     private final JTextField searchField;
+    @Getter
     private final JButton addButton;
     @Getter
-    private final TableRowSorter<DefaultTableModel> rowSorter;
+    private final transient TableRowSorter<DefaultTableModel> rowSorter;
+    private final JLabel appLogoLabel;
     private final JXTable table;
 
     private final Point frameLocation;
@@ -47,6 +48,7 @@ public class HomeScreen extends JFrame {
         PromptSupport.setFontStyle(Font.ITALIC, searchField);
 
         addButton = new JButton("+");
+        addButton.setBackground(Color.decode("#724b1d"));
 
         DefaultTableModel model = new DefaultTableModel(data, columnNames);
 

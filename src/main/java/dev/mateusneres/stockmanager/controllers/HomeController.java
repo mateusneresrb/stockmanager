@@ -1,7 +1,9 @@
 package dev.mateusneres.stockmanager.controllers;
 
+import dev.mateusneres.stockmanager.controllers.popups.MenuController;
 import dev.mateusneres.stockmanager.views.HomeScreen;
 import dev.mateusneres.stockmanager.views.LoginScreen;
+import dev.mateusneres.stockmanager.views.components.MenuComponent;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -25,6 +27,14 @@ public class HomeController {
     private void handleActions() {
         onLogoutClicked();
         onSearchFieldChanged();
+        onAddButtonClicked();
+    }
+
+    public void onAddButtonClicked() {
+        homeScreen.getAddButton().addActionListener(e -> {
+            MenuComponent menuComponent = new MenuComponent();
+            new MenuController(stockController, menuComponent);
+        });
     }
 
     public void onSearchFieldChanged() {
