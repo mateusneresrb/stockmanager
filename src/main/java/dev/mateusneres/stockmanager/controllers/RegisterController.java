@@ -1,6 +1,6 @@
 package dev.mateusneres.stockmanager.controllers;
 
-import dev.mateusneres.stockmanager.repositories.AuthRepository;
+import dev.mateusneres.stockmanager.repositories.UserRepository;
 import dev.mateusneres.stockmanager.utils.EmailValidator;
 import dev.mateusneres.stockmanager.views.LoginScreen;
 import dev.mateusneres.stockmanager.views.SignUpScreen;
@@ -13,11 +13,11 @@ import java.util.Arrays;
 public class RegisterController {
 
     private final SignUpScreen signUpScreen;
-    private final AuthRepository authRepository;
+    private final UserRepository userRepository;
 
     public RegisterController(SignUpScreen signUpScreen) {
         this.signUpScreen = signUpScreen;
-        this.authRepository = new AuthRepository();
+        this.userRepository = new UserRepository();
 
         handleActions();
     }
@@ -49,13 +49,18 @@ public class RegisterController {
                 return;
             }
 
-            boolean isRegistered = authRepository.register(name, email, password);
+            boolean isRegistered = userRepository.register(name, email, password);
 
             if (!isRegistered) {
                 JOptionPane.showMessageDialog(signUpScreen.getEmailField(), "An account with this email address already exists", "Invalid email", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
+            JOptionPane.showMessageDialog(signUpScreen.getEmailField(), "Account is registered!", "Your account is successful registered, you need login!", JOptionPane.OK_OPTION);
+            signUpScreen.dispose();
+
+            LoginScreen loginScreen = new LoginScreen(signUpScreen.getLocation());
+            new LoginController(loginScreen);
         });
     }
 

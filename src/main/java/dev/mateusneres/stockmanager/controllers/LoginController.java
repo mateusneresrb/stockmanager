@@ -1,23 +1,24 @@
 package dev.mateusneres.stockmanager.controllers;
 
-import dev.mateusneres.stockmanager.repositories.AuthRepository;
+import dev.mateusneres.stockmanager.models.User;
+import dev.mateusneres.stockmanager.repositories.UserRepository;
 import dev.mateusneres.stockmanager.utils.EmailValidator;
+import dev.mateusneres.stockmanager.views.HomeScreen;
 import dev.mateusneres.stockmanager.views.LoginScreen;
 import dev.mateusneres.stockmanager.views.SignUpScreen;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Arrays;
 
 public class LoginController {
 
     private final LoginScreen loginScreen;
-    private final AuthRepository authRepository;
+    private final UserRepository userRepository;
 
     public LoginController(LoginScreen loginScreen) {
         this.loginScreen = loginScreen;
-        this.authRepository = new AuthRepository();
+        this.userRepository = new UserRepository();
 
         handleActions();
     }
@@ -42,12 +43,16 @@ public class LoginController {
                 return;
             }
 
-            boolean isLogged = authRepository.login(email, password);
-            if (!isLogged) {
+            User user = userRepository.loginAngGet(email, password);
+            if (user == null) {
                 JOptionPane.showMessageDialog(loginScreen.getEmailField(), "Error: Invalid email or password!", "Invalid email or password", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
+            loginScreen.dispose();
+            StockController stockController = new StockController(user);
+            HomeScreen homeScreen = new HomeScreen(null, stockController.getPurchasesData());
+            new HomeController(stockController, homeScreen);
         });
     }
 

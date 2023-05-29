@@ -2,6 +2,7 @@ package dev.mateusneres.stockmanager.repositories;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import dev.mateusneres.stockmanager.database.MySQLManager;
+import dev.mateusneres.stockmanager.models.User;
 import dev.mateusneres.stockmanager.utils.PasswordHasher;
 
 import java.sql.Connection;
@@ -11,31 +12,59 @@ import java.sql.SQLException;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-public class AuthRepository {
+public class UserRepository {
 
-    public boolean login(String email, char[] password) {
-        String query = "SELECT email, password, nonce FROM users WHERE email = ?";
+    public User loginAngGet(String email, char[] password) {
+        String query = "SELECT * FROM users WHERE email = ?";
 
         try (Connection connection = MySQLManager.getInstance().getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, email);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
+                    UUID userID = UUID.fromString(resultSet.getString("userID"));
                     String storedHash = resultSet.getString("password");
                     String storedNonce = resultSet.getString("nonce");
 
                     String passwordWithNonce = new String(password) + storedNonce;
 
-                    //TODO LOAD USER?
-                    if (BCrypt.verifyer().verify(passwordWithNonce.toCharArray(), storedHash.toCharArray()).verified)
-                        return true;
+                    if (BCrypt.verifyer().verify(passwordWithNonce.toCharArray(), storedHash.toCharArray()).verified) {
+                        return new User(
+                                userID, resultSet.getString("name"),
+                                email, storedHash, storedNonce);
+                    }
+
                 }
             }
         } catch (SQLException e) {
             Logger.getGlobal().severe("Error on login: " + e.getMessage());
         }
 
-        return false;
+        return null;
+    }
+
+    public User findByEmail(String email) {
+        String query = "SELECT userID, name, email, nonce FROM users WHERE email = ?";
+
+        try (Connection connection = MySQLManager.getInstance().getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, email);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return new User(
+                            UUID.fromString(resultSet.getString("userID")),
+                            resultSet.getString("name"),
+                            resultSet.getString("email"),
+                            resultSet.getString("password"),
+                            resultSet.getString("nonce")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            Logger.getGlobal().severe("Error on find user by email: " + e.getMessage());
+        }
+
+        return null;
     }
 
     private boolean isAccountExists(String email) {
