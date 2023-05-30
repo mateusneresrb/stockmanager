@@ -7,6 +7,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -109,6 +112,36 @@ public class MPopUp extends JFrame {
 
         public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
             return button;
+        }
+    }
+
+    public class NumericDocumentFilter extends DocumentFilter {
+        @Override
+        public void insertString(FilterBypass fb, int offset, String text, AttributeSet attrs) throws BadLocationException {
+            String newText = fb.getDocument().getText(0, fb.getDocument().getLength()) + text;
+            if (isNumeric(newText)) {
+                super.insertString(fb, offset, text, attrs);
+            }
+        }
+
+        @Override
+        public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+            String newText = fb.getDocument().getText(0, fb.getDocument().getLength()) + text;
+            if (isNumeric(newText)) {
+                super.replace(fb, offset, length, text, attrs);
+            }
+        }
+
+        private boolean isNumeric(String text) {
+            try {
+                if (text.isEmpty()) {
+                    return true;
+                }
+                double value = Double.parseDouble(text);
+                return true;
+            } catch (NumberFormatException e) {
+                return false;
+            }
         }
     }
 
