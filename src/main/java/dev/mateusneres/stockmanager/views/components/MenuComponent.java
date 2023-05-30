@@ -10,6 +10,7 @@ import java.awt.*;
 @Getter
 public class MenuComponent extends MPopUp {
 
+    private final JButton addPurchaseButton;
     private final JButton addProductButton;
     private final JButton listProductsButton;
     private final JButton addSupplierButton;
@@ -17,6 +18,9 @@ public class MenuComponent extends MPopUp {
 
     public MenuComponent() {
         super("StockManager - Menu");
+
+        addPurchaseButton = new JButton("Add Purchase!");
+        addPurchaseButton.setPreferredSize(new Dimension(getWidth(), 50));
 
         addProductButton = new JButton("Add Product!");
         addProductButton.setPreferredSize(new Dimension(getWidth(), 50));
@@ -36,9 +40,16 @@ public class MenuComponent extends MPopUp {
         JPanel contentPane = new JPanel(new VerticalLayout(10));
         contentPane.setBorder(BorderFactory.createEmptyBorder(0, 50, 0 , 50));
 
+        JLabel purchaseLabel = new JLabel("Purchase:");
+        purchaseLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        purchaseLabel.setBorder(BorderFactory.createEmptyBorder(20,0, 0, 0));
+        purchaseLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        contentPane.add(purchaseLabel);
+        contentPane.add(addPurchaseButton);
+
         JLabel productsLabel = new JLabel("Product:");
         productsLabel.setFont(new Font("Arial", Font.BOLD, 20));
-        productsLabel.setBorder(BorderFactory.createEmptyBorder(55,0, 0, 0));
+        productsLabel.setBorder(BorderFactory.createEmptyBorder(15,0, 0, 0));
         productsLabel.setHorizontalAlignment(SwingConstants.CENTER);
         contentPane.add(productsLabel);
         contentPane.add(addProductButton);
@@ -46,7 +57,7 @@ public class MenuComponent extends MPopUp {
 
         JLabel suppliersLabel = new JLabel("Supplier:");
         suppliersLabel.setFont(new Font("Arial", Font.BOLD, 20));
-        suppliersLabel.setBorder(BorderFactory.createEmptyBorder(30,0, 0, 0));
+        suppliersLabel.setBorder(BorderFactory.createEmptyBorder(15,0, 0, 0));
         suppliersLabel.setHorizontalAlignment(SwingConstants.CENTER);
         contentPane.add(suppliersLabel);
         contentPane.add(addSupplierButton);
