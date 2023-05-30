@@ -1,10 +1,14 @@
 package dev.mateusneres.stockmanager.controllers.popups;
 
+import dev.mateusneres.stockmanager.controllers.ControllerAction;
 import dev.mateusneres.stockmanager.controllers.StockController;
+import dev.mateusneres.stockmanager.enums.OperationType;
 import dev.mateusneres.stockmanager.views.components.MenuComponent;
+import dev.mateusneres.stockmanager.views.components.ProductHandleComponent;
 import dev.mateusneres.stockmanager.views.components.ProductListComponent;
+import dev.mateusneres.stockmanager.views.components.SupplierListComponent;
 
-public class MenuController {
+public class MenuController implements ControllerAction {
 
     private final StockController stockController;
     private final MenuComponent menuComponent;
@@ -16,7 +20,8 @@ public class MenuController {
         handleActions();
     }
 
-    private void handleActions() {
+    @Override
+    public void handleActions() {
         onAddProductButtonClicked();
         onListProductsButtonClicked();
         onAddSupplierButtonClicked();
@@ -25,14 +30,15 @@ public class MenuController {
 
     public void onAddProductButtonClicked() {
         menuComponent.getAddProductButton().addActionListener(e -> {
-            System.out.println("Add product button clicked");
+            ProductHandleComponent productHandleComponent = new ProductHandleComponent(OperationType.CREATE, null);
+            new ProductHandleController(stockController, productHandleComponent);
         });
     }
 
     public void onListProductsButtonClicked() {
         menuComponent.getListProductsButton().addActionListener(e -> {
-            System.out.println("CLICOU NO LIST...");
-            new ProductListComponent(stockController.getProductsDataTable());
+           ProductListComponent productListComponent = new ProductListComponent(stockController.getProductsDataTable());
+           new ProductListController(stockController, productListComponent);
         });
     }
 
@@ -44,7 +50,8 @@ public class MenuController {
 
     public void onListSupplierButtonClicked() {
         menuComponent.getListSupplierButton().addActionListener(e -> {
-            System.out.println("List supplier button clicked");
+            SupplierListComponent supplierListComponent = new SupplierListComponent(stockController.getSupplierDataTable());
+            new SupplierListController(stockController, supplierListComponent);
         });
     }
 
