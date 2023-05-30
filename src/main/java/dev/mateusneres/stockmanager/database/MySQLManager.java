@@ -27,7 +27,7 @@ public class MySQLManager {
 
     public void initTables() {
         try (Connection conn = getConnection(); Statement statement = conn.createStatement()) {
-            statement.addBatch("CREATE TABLE IF NOT EXISTS `users` ( `userID` VARCHAR(36) NOT NULL, `name` VARCHAR(45) NOT NULL, `email` VARCHAR(45) NOT NULL, `password` VARCHAR(60) NOT NULL, `nonce` VARCHAR(20) NOT NULL, PRIMARY KEY (`userID`))");
+            statement.addBatch("CREATE TABLE IF NOT EXISTS `users` ( `userID` VARCHAR(36) NOT NULL, `name` VARCHAR(45) NOT NULL, `email` VARCHAR(45) UNIQUE NOT NULL, `password` VARCHAR(60) NOT NULL, `nonce` VARCHAR(20) NOT NULL, PRIMARY KEY (`userID`))");
             statement.addBatch("CREATE TABLE IF NOT EXISTS `suppliers` ( `id` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(155) NOT NULL, `address` VARCHAR(255) NOT NULL, `phone` VARCHAR(11) NOT NULL, PRIMARY KEY (`id`))");
             statement.addBatch("CREATE TABLE IF NOT EXISTS `products` ( `id` INT NOT NULL, `name` VARCHAR(155) NOT NULL, `price` FLOAT NOT NULL, `amountAvailable` INT(5) NOT NULL, PRIMARY KEY (`id`))");
             statement.addBatch("CREATE TABLE IF NOT EXISTS `purchases` ( `id` INT NOT NULL AUTO_INCREMENT, `date` BIGINT(19) NOT NULL, `total` FLOAT NOT NULL, `suppliers_id` INT NOT NULL, PRIMARY KEY (`id`, `suppliers_id`), CONSTRAINT `fk_purchases_suppliers` FOREIGN KEY (`suppliers_id`) REFERENCES `suppliers` (`id`))");
