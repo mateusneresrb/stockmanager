@@ -80,13 +80,13 @@ public class SupplierRepository {
         return false;
     }
 
-    public boolean deleteSupplier(Supplier supplier){
+    public boolean deleteSupplier(int id){
         String query = "DELETE FROM suppliers WHERE id = ?";
 
         try (Connection connection = MySQLManager.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setInt(1, supplier.getId());
+            preparedStatement.setInt(1, id);
 
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0)
