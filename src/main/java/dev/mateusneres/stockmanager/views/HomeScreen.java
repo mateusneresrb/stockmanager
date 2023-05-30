@@ -54,6 +54,7 @@ public class HomeScreen extends JFrame {
 
         table = new JXTable(model);
         Highlighter highlighter = HighlighterFactory.createAlternateStriping(Color.decode("#33383e"), Color.decode("#31333b"));
+        table.setFocusable(false);
         table.setHighlighters(highlighter);
 
         rowSorter = new TableRowSorter<>(model);
