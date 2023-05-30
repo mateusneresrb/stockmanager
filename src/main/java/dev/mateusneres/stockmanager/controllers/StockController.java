@@ -71,6 +71,20 @@ public class StockController {
         return data;
     }
 
+    public String[][] getSupplierDataTable(){
+        String[][] data = new String[supplierList.size()][4];
+
+        for(int i = 0; i < supplierList.size(); i++){
+            Supplier supplier = supplierList.get(i);
+            data[i][0] = String.valueOf(supplier.getId());
+            data[i][1] = supplier.getName();
+            data[i][2] = supplier.getAddress();
+            data[i][3] = supplier.getPhone();
+        }
+
+        return data;
+    }
+
     public void logout() {
         loggedUser = null;
     }
