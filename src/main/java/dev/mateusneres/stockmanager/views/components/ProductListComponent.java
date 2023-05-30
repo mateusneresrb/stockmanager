@@ -1,25 +1,37 @@
 package dev.mateusneres.stockmanager.views.components;
 
+import dev.mateusneres.stockmanager.enums.ButtonType;
 import dev.mateusneres.stockmanager.views.MPopUp;
+import lombok.Getter;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class ProductListComponent extends MPopUp {
 
-    private final String[] columnNames = {"ID", "Name", "Price", "Available", "Delete?"};
+    private final String[] columnNames = {"ID", "Name", "Price", "Available", "Edit", "Delete"};
     private final JXTable table;
+    @Getter
+    private final JButton editButton;
+    @Getter
+    private final JButton deleteButton;
 
     public ProductListComponent(String[][] data) {
         super("StockManager - Product List");
 
-        DefaultTableModel model = new DefaultTableModel(data, columnNames);
-
+        NonEditableTableModel model = new NonEditableTableModel(data, columnNames);
         JPanel container = new JPanel();
+
+        MImage editImage = new MImage(new ImageIcon(getClass().getResource("/edit.png")));
+        editButton = new JButton(editImage.getIcon());
+        editButton.setBackground(Color.YELLOW);
+
+        MImage deleteImage = new MImage(new ImageIcon(getClass().getResource("/delete.png")));
+        deleteButton = new JButton(deleteImage.getIcon());
+        deleteButton.setBackground(Color.decode("#410000"));
 
         table = new JXTable(model);
         table.setSelectionForeground(Color.CYAN);
@@ -30,14 +42,19 @@ public class ProductListComponent extends MPopUp {
 
         table.getTableHeader().setDefaultRenderer(new HeaderRenderer());
         table.getTableHeader().setReorderingAllowed(false);
-
-        table.setDefaultRenderer(Object.class, new CustomTableCellRenderer());
         table.setPreferredScrollableViewportSize(new Dimension(getWidth(), 410));
+        table.setDefaultRenderer(Object.class, new TooltipTableCellRenderer());
+
+        table.getColumn("Delete").setCellRenderer(new ButtonRenderer(ButtonType.DELETE));
+        table.getColumn("Delete").setCellEditor(new ButtonEditor(deleteButton));
+
+        table.getColumn("Edit").setCellRenderer(new ButtonRenderer(ButtonType.EDIT));
+        table.getColumn("Edit").setCellEditor(new ButtonEditor(editButton));
+        table.packAll();
 
         JScrollPane scrollPane = new JScrollPane(table);
         container.add(scrollPane);
         setContentPane(container);
     }
-
 
 }
