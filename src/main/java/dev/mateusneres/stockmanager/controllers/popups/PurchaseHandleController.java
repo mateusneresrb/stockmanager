@@ -51,7 +51,6 @@ public class PurchaseHandleController implements ControllerAction {
             double totalPrice = Double.parseDouble(totalPriceResult);
             Product product = getProductBySelection(productSelected);
             Supplier supplier = getSupplierBySelection(supplierSelected);
-            Purchase purchase = new Purchase(Instant.now(), totalPrice, supplier);
 
             if (product == null || supplier == null) {
                 JOptionPane.showMessageDialog(productHandleComponent.getProductComboBox(), "Error: Unable to get product or supplier!", "Invalid field", JOptionPane.ERROR_MESSAGE);
@@ -59,7 +58,8 @@ public class PurchaseHandleController implements ControllerAction {
             }
 
             if (idLabel.isEmpty() && productHandleComponent.getOperationType() == OperationType.CREATE) {
-                boolean isCreated = createPurchase(new PurchaseProduct(product, purchase, supplier, Integer.parseInt(amount)));
+                Purchase createdPurchase = new Purchase(Instant.now(), totalPrice, supplier);
+                boolean isCreated = createPurchase(new PurchaseProduct(product, createdPurchase, supplier, Integer.parseInt(amount)));
                 if (!isCreated) {
                     JOptionPane.showMessageDialog(productHandleComponent.getProductComboBox(), "Error: Unable to create purchase!", "Error in purchase create!", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -69,6 +69,9 @@ public class PurchaseHandleController implements ControllerAction {
                 productHandleComponent.dispose();
                 return;
             }
+
+            PurchaseProduct purchaseProduct = stockController.getPurchaseProductList().stream().filter(purchaseProduct1 -> purchaseProduct1.getId() == Integer.parseInt(idLabel)).findFirst().orElse(null);
+            Purchase purchase = new Purchase(purchaseProduct.getId(), Instant.now(), totalPrice, supplier);
 
             updatePurchase(new PurchaseProduct(Integer.parseInt(idLabel), product, purchase, supplier, Integer.parseInt(amount)));
             JOptionPane.showMessageDialog(productHandleComponent.getProductComboBox(), "Purchase has been updated!", "Purchase is updated!", JOptionPane.INFORMATION_MESSAGE);
@@ -123,6 +126,7 @@ public class PurchaseHandleController implements ControllerAction {
     }
 
     private void updatePurchase(PurchaseProduct purchaseProduct) {
+        purchaseProductRepository.updatePurchase(purchaseProduct.getPurchase());
         purchaseProductRepository.updatePurchaseProduct(purchaseProduct);
 
         stockController.getPurchaseProductList().removeIf(purchaseProduct1 -> purchaseProduct1.getId() == purchaseProduct.getId());
