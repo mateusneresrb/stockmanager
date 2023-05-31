@@ -9,6 +9,7 @@ import dev.mateusneres.stockmanager.models.Supplier;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,23 +60,63 @@ public class PurchaseProductRepository {
         return purchaseProducts;
     }
 
-    public boolean addPurchaseProduct(Product product, Purchase purchase, Supplier supplier, int quantity) {
+    public Purchase createPurchase(Purchase purchase) {
+        String query = "INSERT INTO purchases (date, total, supplier_id) VALUES (?, ?, ?)";
+
+        try (Connection connection = MySQLManager.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+
+            preparedStatement.setLong(1, purchase.getPurchaseDate().toEpochMilli());
+            preparedStatement.setDouble(2, purchase.getTotalValue());
+            preparedStatement.setInt(3, purchase.getSupplier().getId());
+            preparedStatement.execute();
+
+            try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
+                if (resultSet.next()) {
+                    return new Purchase(
+                            resultSet.getInt(1),
+                            purchase.getPurchaseDate(),
+                            purchase.getTotalValue(),
+                            purchase.getSupplier()
+                    );
+                }
+            }
+
+        } catch (Exception e) {
+            Logger.getGlobal().severe("Error on add purchase: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public PurchaseProduct createPurchaseProduct(Product product, Purchase purchase, Supplier supplier, int quantity) {
         String query = "INSERT INTO purchases_product (product_id, purchase_id, supplier_id, quantity) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = MySQLManager.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             preparedStatement.setInt(1, product.getId());
             preparedStatement.setInt(2, purchase.getId());
             preparedStatement.setInt(3, supplier.getId());
             preparedStatement.setInt(4, quantity);
+            preparedStatement.execute();
 
-            return preparedStatement.executeUpdate() > 0;
+            try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
+                if (resultSet.next()) {
+                    return new PurchaseProduct(
+                            resultSet.getInt(1),
+                            product,
+                            purchase,
+                            supplier,
+                            quantity
+                    );
+                }
+            }
+
         } catch (Exception e) {
             Logger.getGlobal().severe("Error on add purchaseProduct: " + e.getMessage());
         }
 
-        return false;
+        return null;
     }
 
     public boolean updatePurchaseProduct(PurchaseProduct purchaseProduct) {

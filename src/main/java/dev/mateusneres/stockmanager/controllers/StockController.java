@@ -57,6 +57,10 @@ public class StockController {
         return data;
     }
 
+    public String[] getSupplierWithID(){
+        return supplierList.stream().map(supplier -> supplier.getId() + " - " + supplier.getName()).toArray(String[]::new);
+    }
+
     public String[][] getProductsDataTable(){
         String[][] data = new String[productList.size()][4];
 
@@ -69,6 +73,10 @@ public class StockController {
         }
 
         return data;
+    }
+
+    public String[] getProductsWithID(){
+        return productList.stream().map(product -> product.getId() + " - " + product.getName() + " - R$ " + product.getPrice()).toArray(String[]::new);
     }
 
     public String[][] getSupplierDataTable(){

@@ -1,5 +1,6 @@
 package dev.mateusneres.stockmanager.views.components;
 
+import dev.mateusneres.stockmanager.controllers.HomeController;
 import dev.mateusneres.stockmanager.views.MPopUp;
 import lombok.Getter;
 import org.jdesktop.swingx.VerticalLayout;
@@ -16,8 +17,8 @@ public class MenuComponent extends MPopUp {
     private final JButton addSupplierButton;
     private final JButton listSupplierButton;
 
-    public MenuComponent() {
-        super("StockManager - Menu");
+    public MenuComponent(HomeController homeController) {
+        super("StockManager - Menu", homeController);
 
         addPurchaseButton = new JButton("Add Purchase!");
         addPurchaseButton.setPreferredSize(new Dimension(getWidth(), 50));

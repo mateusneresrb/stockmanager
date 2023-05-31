@@ -1,7 +1,9 @@
 package dev.mateusneres.stockmanager.views.components;
 
+import dev.mateusneres.stockmanager.controllers.HomeController;
 import dev.mateusneres.stockmanager.enums.ButtonType;
 import dev.mateusneres.stockmanager.views.MPopUp;
+import dev.mateusneres.stockmanager.views.hooks.*;
 import lombok.Getter;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.Highlighter;
@@ -19,10 +21,10 @@ public class ProductListComponent extends MPopUp {
     @Getter
     private final JButton deleteButton;
 
-    public ProductListComponent(String[][] data) {
-        super("StockManager - Product List");
+    public ProductListComponent(HomeController homeController, String[][] data) {
+        super("StockManager - Product List", homeController);
 
-        NonEditableTableModel model = new NonEditableTableModel(data, columnNames);
+        NonEditableButtonTable model = new NonEditableButtonTable(data, columnNames);
         JPanel container = new JPanel();
 
         MImage editImage = new MImage(new ImageIcon(getClass().getResource("/edit.png")));
@@ -40,7 +42,7 @@ public class ProductListComponent extends MPopUp {
         Highlighter highlighter = HighlighterFactory.createAlternateStriping(Color.decode("#33383e"), Color.decode("#31333b"));
         table.setHighlighters(highlighter);
 
-        table.getTableHeader().setDefaultRenderer(new HeaderRenderer());
+        table.getTableHeader().setDefaultRenderer(new TableHeaderRenderer());
         table.getTableHeader().setReorderingAllowed(false);
         table.setPreferredScrollableViewportSize(new Dimension(getWidth(), 410));
         table.setDefaultRenderer(Object.class, new TooltipTableCellRenderer());

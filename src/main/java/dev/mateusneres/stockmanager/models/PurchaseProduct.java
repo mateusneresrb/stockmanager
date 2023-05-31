@@ -1,16 +1,23 @@
 package dev.mateusneres.stockmanager.models;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
 @AllArgsConstructor
-@Getter
+@Data
 public class PurchaseProduct {
 
-    private final int id;
-    private final Product product;
-    private final Purchase purchase;
-    private final Supplier supplier;
-    private final int quantity;
+    private int id;
+    private Product product;
+    private Purchase purchase;
+    private Supplier supplier;
+    private int quantity;
+
+    public PurchaseProduct(Product product, Purchase purchase, Supplier supplier, int quantity) {
+        this.product = product;
+        this.purchase = purchase;
+        this.supplier = supplier;
+        this.quantity = quantity;
+    }
 
 }

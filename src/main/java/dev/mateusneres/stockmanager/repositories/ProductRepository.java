@@ -3,10 +3,7 @@ package dev.mateusneres.stockmanager.repositories;
 import dev.mateusneres.stockmanager.database.MySQLManager;
 import dev.mateusneres.stockmanager.models.Product;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -36,26 +33,33 @@ public class ProductRepository {
         return productList;
     }
 
-    public boolean addProduct(Product product) {
+    public Product createProduct(Product product) {
         String query = "INSERT INTO products (name, price, amountAvailable) VALUES (?, ?, ?)";
 
         try (Connection connection = MySQLManager.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
             preparedStatement.setInt(3, product.getAmountAvailable());
+            preparedStatement.execute();
 
-            int rowsAffected = preparedStatement.executeUpdate();
-            if (rowsAffected > 0)
-                return true;
+            try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
+                if (resultSet.next()) {
+                    return new Product(
+                            resultSet.getInt(1),
+                            product.getName(),
+                            product.getPrice(),
+                            product.getAmountAvailable());
+                }
+            }
 
         } catch (
                 SQLException e) {
             Logger.getGlobal().severe("Error on add product: " + e.getMessage());
         }
 
-        return false;
+        return null;
     }
 
     public boolean updateProduct(Product product) {

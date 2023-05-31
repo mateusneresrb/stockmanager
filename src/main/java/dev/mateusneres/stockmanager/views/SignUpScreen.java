@@ -45,12 +45,12 @@ public class SignUpScreen extends JFrame {
         emailField = new JTextField();
 
         passwordLabel = new JLabel("Password:");
-        passwordLabel.setBorder(BorderFactory.createEmptyBorder(8, 2, 2, 0));
+        passwordLabel.setBorder(BorderFactory.createEmptyBorder(15, 2, 2, 0));
         passwordField = new JPasswordField();
-        passwordField.setPreferredSize(new Dimension(131, 27));
+        passwordField.setPreferredSize(new Dimension(133, 27));
 
         passwordConfirmLabel = new JLabel("Confirm password:");
-        passwordConfirmLabel.setBorder(BorderFactory.createEmptyBorder(8, 2, 2, 0));
+        passwordConfirmLabel.setBorder(BorderFactory.createEmptyBorder(15, 2, 2, 0));
         passwordConfirmField = new JPasswordField();
         passwordConfirmField.setPreferredSize(new Dimension(133, 27));
 
@@ -74,7 +74,7 @@ public class SignUpScreen extends JFrame {
         separationPanel.setPreferredSize(new Dimension(getWidth(), 15));
         separationPanel.setOpaque(false);
 
-        JPanel passwordPanelFlow = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JPanel passwordPanelFlow = new JPanel(new BorderLayout());
 
         JPanel passwordPanelVertical = new JPanel(new VerticalLayout());
         passwordPanelVertical.add(passwordLabel);
@@ -84,8 +84,8 @@ public class SignUpScreen extends JFrame {
         passwordConfirmPanelVertical.add(passwordConfirmLabel);
         passwordConfirmPanelVertical.add(passwordConfirmField);
 
-        passwordPanelFlow.add(passwordPanelVertical);
-        passwordPanelFlow.add(passwordConfirmPanelVertical);
+        passwordPanelFlow.add(passwordPanelVertical, BorderLayout.WEST);
+        passwordPanelFlow.add(passwordConfirmPanelVertical, BorderLayout.EAST);
 
         formPanel.setBorder(BorderFactory.createEmptyBorder(0, 80, 0, 80));
         formPanel.add(nameLabel);

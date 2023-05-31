@@ -1,7 +1,10 @@
 package dev.mateusneres.stockmanager.controllers.popups;
 
 import dev.mateusneres.stockmanager.controllers.StockController;
+import dev.mateusneres.stockmanager.enums.OperationType;
+import dev.mateusneres.stockmanager.models.Supplier;
 import dev.mateusneres.stockmanager.repositories.SupplierRepository;
+import dev.mateusneres.stockmanager.views.components.SupplierHandleComponent;
 import dev.mateusneres.stockmanager.views.components.SupplierListComponent;
 import org.jdesktop.swingx.JXTable;
 
@@ -29,7 +32,16 @@ public class SupplierListController {
 
     private void onEditButtonClicked() {
         supplierListComponent.getEditButton().addActionListener(e -> {
-            //OPEN OTHER SCREEN SIMILAR ADD...
+            int supplierID = getSelectedSupplierId((JButton) e.getSource());
+
+            Supplier supplier = stockController.getSupplierList().stream().filter(supplier1 -> supplier1.getId() == supplierID).findFirst().orElse(null);
+            if (supplier == null) {
+                JOptionPane.showMessageDialog(null, "Supplier not available!", "Not found supplier!", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            SupplierHandleComponent supplierHandleComponent = new SupplierHandleComponent(supplierListComponent.getHomeController(), OperationType.UPDATE, supplier);
+            new SupplierHandleController(stockController, supplierHandleComponent);
         });
     }
 
@@ -42,10 +54,20 @@ public class SupplierListController {
             int column = table.getColumnModel().getColumnIndex("ID");
             int id = Integer.parseInt((String) table.getModel().getValueAt(modelRow, column));
 
-            stockController.getSupplierList().removeIf(product -> product.getId() == id);
+            stockController.getPurchaseProductList().removeIf(purchaseProduct -> purchaseProduct.getSupplier().getId() == id);
+            stockController.getSupplierList().removeIf(supplier -> supplier.getId() == id);
             supplierRepository.deleteSupplier(id);
             model.removeRow(modelRow);
         });
+    }
+
+    private int getSelectedSupplierId(JButton button) {
+        JXTable table = (JXTable) SwingUtilities.getAncestorOfClass(JXTable.class, button);
+
+        int modelRow = table.convertRowIndexToModel(table.getSelectedRow());
+        int column = table.getColumnModel().getColumnIndex("ID");
+
+        return Integer.parseInt((String) table.getModel().getValueAt(modelRow, column));
     }
 
 }

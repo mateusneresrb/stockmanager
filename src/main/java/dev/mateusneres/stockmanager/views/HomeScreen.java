@@ -1,5 +1,11 @@
 package dev.mateusneres.stockmanager.views;
 
+import dev.mateusneres.stockmanager.enums.ButtonType;
+import dev.mateusneres.stockmanager.views.components.MImage;
+import dev.mateusneres.stockmanager.views.hooks.ButtonEditor;
+import dev.mateusneres.stockmanager.views.hooks.ButtonRenderer;
+import dev.mateusneres.stockmanager.views.hooks.TableHeaderRenderer;
+import dev.mateusneres.stockmanager.views.hooks.TooltipTableCellRenderer;
 import lombok.Getter;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.VerticalLayout;
@@ -8,14 +14,13 @@ import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 
 public class HomeScreen extends JFrame {
 
-    private final String[] columnNames = {"ID", "Produto", "Supplier", "Quantity", "Price", "Date"};
+    private final String[] columnNames = {"ID", "Produto", "Supplier", "Quantity", "Price", "Date", "Edit", "Delete"};
     @Getter
     private final JLabel logoutLabel;
     @Getter
@@ -26,6 +31,10 @@ public class HomeScreen extends JFrame {
     private final transient TableRowSorter<DefaultTableModel> rowSorter;
     private final JLabel appLogoLabel;
     private final JXTable table;
+    @Getter
+    private final JButton editButton;
+    @Getter
+    private final JButton deleteButton;
 
     private final Point frameLocation;
 
@@ -47,6 +56,14 @@ public class HomeScreen extends JFrame {
         PromptSupport.setFocusBehavior(PromptSupport.FocusBehavior.HIDE_PROMPT, searchField);
         PromptSupport.setFontStyle(Font.ITALIC, searchField);
 
+        MImage editImage = new MImage(new ImageIcon(getClass().getResource("/edit.png")));
+        editButton = new JButton(editImage.getIcon());
+        editButton.setBackground(Color.YELLOW);
+
+        MImage deleteImage = new MImage(new ImageIcon(getClass().getResource("/delete.png")));
+        deleteButton = new JButton(deleteImage.getIcon());
+        deleteButton.setBackground(Color.decode("#410000"));
+
         addButton = new JButton("+");
         addButton.setBackground(Color.decode("#724b1d"));
 
@@ -60,8 +77,15 @@ public class HomeScreen extends JFrame {
         rowSorter = new TableRowSorter<>(model);
         table.setRowSorter(rowSorter);
 
-        table.getTableHeader().setDefaultRenderer(new HeaderRenderer());
-        table.setDefaultRenderer(Object.class, new CustomTableCellRenderer());
+        table.getTableHeader().setDefaultRenderer(new TableHeaderRenderer());
+        table.setDefaultRenderer(Object.class, new TooltipTableCellRenderer());
+
+        table.getColumn("Delete").setCellRenderer(new ButtonRenderer(ButtonType.DELETE));
+        table.getColumn("Delete").setCellEditor(new ButtonEditor(deleteButton));
+
+        table.getColumn("Edit").setCellRenderer(new ButtonRenderer(ButtonType.EDIT));
+        table.getColumn("Edit").setCellEditor(new ButtonEditor(editButton));
+        table.packAll();
 
         table.setCellSelectionEnabled(true);
         table.setDefaultEditor(Object.class, null);
@@ -108,27 +132,23 @@ public class HomeScreen extends JFrame {
         setAlwaysOnTop(true);
     }
 
+    public void updateTableData(String[][] newData) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setDataVector(newData, columnNames);
+        table.getColumn("Delete").setCellRenderer(new ButtonRenderer(ButtonType.DELETE));
+        table.getColumn("Delete").setCellEditor(new ButtonEditor(deleteButton));
+
+        table.getColumn("Edit").setCellRenderer(new ButtonRenderer(ButtonType.EDIT));
+        table.getColumn("Edit").setCellEditor(new ButtonEditor(editButton));
+        table.packAll();
+    }
+
     private void setFrameLocation(Point location) {
         if (location != null) {
             setLocation(location);
             return;
         }
         setLocationRelativeTo(null);
-    }
-
-    private static class HeaderRenderer extends DefaultTableCellRenderer {
-        public HeaderRenderer() {
-            setOpaque(true);
-            setHorizontalAlignment(SwingConstants.CENTER);
-            setBackground(Color.decode("#20262b"));
-            setFont(getFont().deriveFont(Font.BOLD, 14f));
-        }
-    }
-
-    private static class CustomTableCellRenderer extends DefaultTableCellRenderer {
-        public CustomTableCellRenderer() {
-            setHorizontalAlignment(CENTER);
-        }
     }
 
 }

@@ -3,10 +3,7 @@ package dev.mateusneres.stockmanager.repositories;
 import dev.mateusneres.stockmanager.database.MySQLManager;
 import dev.mateusneres.stockmanager.models.Supplier;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -37,25 +34,33 @@ public class SupplierRepository {
         return suppliers;
     }
 
-    public boolean addSupplier(Supplier supplier){
+    public Supplier createSupplier(Supplier supplier){
         String query = "INSERT INTO suppliers (name, address, phone) VALUES (?, ?, ?)";
 
         try (Connection connection = MySQLManager.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             preparedStatement.setString(1, supplier.getName());
             preparedStatement.setString(2, supplier.getAddress());
             preparedStatement.setString(3, supplier.getPhone());
 
-            int rowsAffected = preparedStatement.executeUpdate();
-            if (rowsAffected > 0)
-                return true;
+            preparedStatement.execute();
+
+            try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
+                if (resultSet.next()) {
+                    return new Supplier(
+                            resultSet.getInt(1),
+                            supplier.getName(),
+                            supplier.getAddress(),
+                            supplier.getPhone());
+                }
+            }
 
         } catch (SQLException e) {
             Logger.getGlobal().severe("Error on add supplier: " + e.getMessage());
         }
 
-        return false;
+        return null;
     }
 
     public boolean updateSupplier(Supplier supplier){

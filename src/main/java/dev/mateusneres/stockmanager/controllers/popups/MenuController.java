@@ -3,10 +3,7 @@ package dev.mateusneres.stockmanager.controllers.popups;
 import dev.mateusneres.stockmanager.controllers.ControllerAction;
 import dev.mateusneres.stockmanager.controllers.StockController;
 import dev.mateusneres.stockmanager.enums.OperationType;
-import dev.mateusneres.stockmanager.views.components.MenuComponent;
-import dev.mateusneres.stockmanager.views.components.ProductHandleComponent;
-import dev.mateusneres.stockmanager.views.components.ProductListComponent;
-import dev.mateusneres.stockmanager.views.components.SupplierListComponent;
+import dev.mateusneres.stockmanager.views.components.*;
 
 public class MenuController implements ControllerAction {
 
@@ -26,31 +23,40 @@ public class MenuController implements ControllerAction {
         onListProductsButtonClicked();
         onAddSupplierButtonClicked();
         onListSupplierButtonClicked();
+        onAddPurchaseButtonClicked();
+    }
+
+    private void onAddPurchaseButtonClicked(){
+        menuComponent.getAddPurchaseButton().addActionListener(e -> {
+            PurchaseHandleComponent purchaseHandleComponent = new PurchaseHandleComponent(menuComponent.getHomeController(), OperationType.CREATE, stockController.getProductsWithID(), stockController.getSupplierWithID(), null);
+            new PurchaseHandleController(stockController, purchaseHandleComponent);
+        });
     }
 
     public void onAddProductButtonClicked() {
         menuComponent.getAddProductButton().addActionListener(e -> {
-            ProductHandleComponent productHandleComponent = new ProductHandleComponent(OperationType.CREATE, null);
+            ProductHandleComponent productHandleComponent = new ProductHandleComponent(menuComponent.getHomeController(), OperationType.CREATE, null);
             new ProductHandleController(stockController, productHandleComponent);
         });
     }
 
-    public void onListProductsButtonClicked() {
+    private void onListProductsButtonClicked() {
         menuComponent.getListProductsButton().addActionListener(e -> {
-           ProductListComponent productListComponent = new ProductListComponent(stockController.getProductsDataTable());
-           new ProductListController(stockController, productListComponent);
+            ProductListComponent productListComponent = new ProductListComponent(menuComponent.getHomeController(), stockController.getProductsDataTable());
+            new ProductListController(stockController, productListComponent);
         });
     }
 
-    public void onAddSupplierButtonClicked() {
+    private void onAddSupplierButtonClicked() {
         menuComponent.getAddSupplierButton().addActionListener(e -> {
-            System.out.println("Add supplier button clicked");
+            SupplierHandleComponent supplierHandleComponent = new SupplierHandleComponent(menuComponent.getHomeController(), OperationType.CREATE, null);
+            new SupplierHandleController(stockController, supplierHandleComponent);
         });
     }
 
-    public void onListSupplierButtonClicked() {
+    private void onListSupplierButtonClicked() {
         menuComponent.getListSupplierButton().addActionListener(e -> {
-            SupplierListComponent supplierListComponent = new SupplierListComponent(stockController.getSupplierDataTable());
+            SupplierListComponent supplierListComponent = new SupplierListComponent(menuComponent.getHomeController(), stockController.getSupplierDataTable());
             new SupplierListController(stockController, supplierListComponent);
         });
     }

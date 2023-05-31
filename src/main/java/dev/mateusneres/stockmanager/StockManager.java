@@ -20,6 +20,7 @@ public class StockManager {
             MySQLManager.getInstance().initTables();
 
             AtomicInteger progress = new AtomicInteger();
+
             Timer timer = new Timer(20, e -> {
                 splash.setProgress(progress.addAndGet(1));
 

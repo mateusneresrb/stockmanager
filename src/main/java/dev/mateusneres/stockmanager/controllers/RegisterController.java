@@ -56,7 +56,7 @@ public class RegisterController {
                 return;
             }
 
-            JOptionPane.showMessageDialog(signUpScreen.getEmailField(), "Account is registered!", "Your account is successful registered, you need login!", JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(signUpScreen.getEmailField(), "Account is registered!", "Your account is successful registered, you need login!", JOptionPane.INFORMATION_MESSAGE);
             signUpScreen.dispose();
 
             LoginScreen loginScreen = new LoginScreen(signUpScreen.getLocation());

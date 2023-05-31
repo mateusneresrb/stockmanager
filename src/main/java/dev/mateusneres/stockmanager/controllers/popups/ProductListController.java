@@ -35,12 +35,12 @@ public class ProductListController {
             int productID = getSelectedProductId((JButton) e.getSource());
 
             Product product = stockController.getProductList().stream().filter(product1 -> product1.getId() == productID).findFirst().orElse(null);
-            if(product == null) {
+            if (product == null) {
                 JOptionPane.showMessageDialog(null, "Product not available!", "Not found product!", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            ProductHandleComponent productHandleComponent = new ProductHandleComponent(OperationType.UPDATE, product);
+            ProductHandleComponent productHandleComponent = new ProductHandleComponent(productListComponent.getHomeController(), OperationType.UPDATE, product);
             new ProductHandleController(stockController, productHandleComponent);
         });
     }
@@ -54,6 +54,7 @@ public class ProductListController {
             int column = table.getColumnModel().getColumnIndex("ID");
             int id = Integer.parseInt((String) table.getModel().getValueAt(modelRow, column));
 
+            stockController.getPurchaseProductList().removeIf(purchaseProduct -> purchaseProduct.getProduct().getId() == id);
             stockController.getProductList().removeIf(product -> product.getId() == id);
             productRepository.deleteProduct(id);
             model.removeRow(modelRow);
@@ -68,6 +69,5 @@ public class ProductListController {
 
         return Integer.parseInt((String) table.getModel().getValueAt(modelRow, column));
     }
-
-
+    
 }
