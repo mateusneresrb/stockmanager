@@ -88,6 +88,26 @@ public class PurchaseProductRepository {
         return null;
     }
 
+    public boolean updatePurchase(Purchase purchase) {
+        String query = "UPDATE purchases SET date = ?, total = ?, supplier_id = ? WHERE id = ?";
+
+        try (Connection connection = MySQLManager.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setLong(1, purchase.getPurchaseDate().toEpochMilli());
+            preparedStatement.setDouble(2, purchase.getTotalValue());
+            preparedStatement.setInt(3, purchase.getSupplier().getId());
+            preparedStatement.setInt(4, purchase.getId());
+            preparedStatement.execute();
+
+            return true;
+
+        } catch (Exception e) {
+            Logger.getGlobal().severe("Error on update purchase: " + e.getMessage());
+        }
+        return false;
+    }
+
     public PurchaseProduct createPurchaseProduct(Product product, Purchase purchase, Supplier supplier, int quantity) {
         String query = "INSERT INTO purchases_product (product_id, purchase_id, supplier_id, quantity) VALUES (?, ?, ?, ?)";
 
