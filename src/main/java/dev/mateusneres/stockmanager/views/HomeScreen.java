@@ -77,6 +77,7 @@ public class HomeScreen extends JFrame {
         rowSorter = new TableRowSorter<>(model);
         table.setRowSorter(rowSorter);
 
+        table.getTableHeader().setReorderingAllowed(false);
         table.getTableHeader().setDefaultRenderer(new TableHeaderRenderer());
         table.setDefaultRenderer(Object.class, new TooltipTableCellRenderer());
 
