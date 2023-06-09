@@ -14,12 +14,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * This class is responsible for monitoring the files.
+ */
 public class MonitorTask implements Runnable {
 
     private final StockController stockController;
     private final String[] tables = {"users", "products", "suppliers", "purchases_product"};
     private final Path currentPath = Paths.get("");
 
+    /**
+     * Constructor of MonitorTask.
+     * @param stockController StockController
+     */
     public MonitorTask(StockController stockController) {
         this.stockController = stockController;
     }

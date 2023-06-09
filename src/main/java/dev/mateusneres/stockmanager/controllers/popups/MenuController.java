@@ -5,11 +5,19 @@ import dev.mateusneres.stockmanager.controllers.StockController;
 import dev.mateusneres.stockmanager.enums.OperationType;
 import dev.mateusneres.stockmanager.views.components.*;
 
+/**
+ * This class is responsible for controlling the popup menu.
+ */
 public class MenuController implements ControllerAction {
 
     private final StockController stockController;
     private final MenuComponent menuComponent;
 
+    /**
+     * Constructor
+     * @param stockController StockController
+     * @param menuComponent MenuComponent
+     */
     public MenuController(StockController stockController, MenuComponent menuComponent) {
         this.stockController = stockController;
         this.menuComponent = menuComponent;
@@ -17,6 +25,9 @@ public class MenuController implements ControllerAction {
         handleActions();
     }
 
+    /**
+     * This method is responsible for handling the actions of the buttons in the menu.
+     */
     @Override
     public void handleActions() {
         onAddProductButtonClicked();
@@ -33,7 +44,7 @@ public class MenuController implements ControllerAction {
         });
     }
 
-    public void onAddProductButtonClicked() {
+    private void onAddProductButtonClicked() {
         menuComponent.getAddProductButton().addActionListener(e -> {
             ProductHandleComponent productHandleComponent = new ProductHandleComponent(menuComponent.getHomeController(), OperationType.CREATE, null);
             new ProductHandleController(stockController, productHandleComponent);

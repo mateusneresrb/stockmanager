@@ -8,11 +8,19 @@ import dev.mateusneres.stockmanager.views.components.SupplierHandleComponent;
 
 import javax.swing.*;
 
+/**
+ * This class is responsible for controlling the popup supplier handle.
+ */
 public class SupplierHandleController implements ControllerAction {
 
     private final StockController stockController;
     private final SupplierHandleComponent productHandleComponent;
 
+    /**
+     * Constructor
+     * @param stockController StockController
+     * @param supplierHandleComponent SupplierHandleComponent
+     */
     public SupplierHandleController(StockController stockController, SupplierHandleComponent supplierHandleComponent) {
         this.stockController = stockController;
         this.productHandleComponent = supplierHandleComponent;
@@ -20,6 +28,9 @@ public class SupplierHandleController implements ControllerAction {
         handleActions();
     }
 
+    /**
+     * This method is responsible for handling the actions of the buttons in the supplier handle.
+     */
     @Override
     public void handleActions() {
         onButtonClickEvent();

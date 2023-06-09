@@ -41,14 +41,24 @@ public class SplashScreen extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Show the splash screen.
+     */
     public void showSplashScreen() {
         setVisible(true);
     }
 
+    /**
+     * Hide the splash screen.
+     */
     public void hideSplashScreen() {
         setVisible(false);
     }
 
+    /**
+     * Set the progress bar value.
+     * @param progress Integer
+     */
     public void setProgress(int progress) {
         jProgressBar.setValue(progress);
     }

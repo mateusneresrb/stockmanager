@@ -18,12 +18,21 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class HomeController implements ControllerAction{
+/**
+ * This class is responsible for controlling the home screen.
+ */
+public class HomeController implements ControllerAction {
 
     private final StockController stockController;
     private final HomeScreen homeScreen;
     private final PurchaseProductRepository purchaseProductRepository;
 
+    /**
+     * Constructor
+     *
+     * @param stockController StockController
+     * @param homeScreen HomeScreen
+     */
     public HomeController(StockController stockController, HomeScreen homeScreen) {
         this.stockController = stockController;
         this.homeScreen = homeScreen;
@@ -32,6 +41,9 @@ public class HomeController implements ControllerAction{
         handleActions();
     }
 
+    /**
+     * This method is responsible for handling the actions of the buttons in the home screen.
+     */
     @Override
     public void handleActions() {
         onLogoutClicked();
@@ -40,19 +52,22 @@ public class HomeController implements ControllerAction{
         onEditCellClicked();
         onDeleteCellClicked();
     }
-
-    public void updateTableData(){
+    
+    /**
+     * This method is responsible for update the table data.
+     */
+    public void updateTableData() {
         homeScreen.updateTableData(stockController.getPurchasesDataTable());
     }
 
-    public void onAddButtonClicked() {
+    private void onAddButtonClicked() {
         homeScreen.getAddButton().addActionListener(e -> {
             MenuComponent menuComponent = new MenuComponent(this);
             new MenuController(stockController, menuComponent);
         });
     }
 
-    public void onEditCellClicked() {
+    private void onEditCellClicked() {
         homeScreen.getEditButton().addActionListener(e -> {
             int purchaseId = getSelectedPurchaseId((JButton) e.getSource());
 
@@ -67,7 +82,7 @@ public class HomeController implements ControllerAction{
         });
     }
 
-    public void onDeleteCellClicked() {
+    private void onDeleteCellClicked() {
         homeScreen.getDeleteButton().addActionListener(e -> {
             JXTable table = (JXTable) SwingUtilities.getAncestorOfClass(JXTable.class, (JButton) e.getSource());
 
@@ -82,7 +97,7 @@ public class HomeController implements ControllerAction{
         });
     }
 
-    public void onSearchFieldChanged() {
+    private void onSearchFieldChanged() {
         homeScreen.getSearchField().getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -114,8 +129,7 @@ public class HomeController implements ControllerAction{
         });
     }
 
-
-    public void onLogoutClicked() {
+    private void onLogoutClicked() {
         homeScreen.getLogoutLabel().addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {

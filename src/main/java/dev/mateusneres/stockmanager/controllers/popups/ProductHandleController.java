@@ -9,11 +9,19 @@ import dev.mateusneres.stockmanager.views.components.ProductHandleComponent;
 
 import javax.swing.*;
 
+/**
+ * This class is responsible for controlling the popup product handle.
+ */
 public class ProductHandleController implements ControllerAction {
 
     private final StockController stockController;
     private final ProductHandleComponent productHandleComponent;
 
+    /**
+     * Constructor
+     * @param stockController StockController
+     * @param productHandleComponent ProductHandleComponent
+     */
     public ProductHandleController(StockController stockController, ProductHandleComponent productHandleComponent) {
         this.stockController = stockController;
         this.productHandleComponent = productHandleComponent;
@@ -21,6 +29,9 @@ public class ProductHandleController implements ControllerAction {
         handleActions();
     }
 
+    /**
+     * This method is responsible for handling the actions of the buttons in the product handle.
+     */
     @Override
     public void handleActions() {
         onButtonClickEvent();

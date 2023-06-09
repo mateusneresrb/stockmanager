@@ -12,12 +12,20 @@ import org.jdesktop.swingx.JXTable;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * This class is responsible for controlling the popup menu.
+ */
 public class SupplierListController implements ControllerAction {
 
     private final StockController stockController;
     private final SupplierListComponent supplierListComponent;
     private final SupplierRepository supplierRepository;
 
+    /**
+     * Constructor
+     * @param stockController StockController
+     * @param supplierListComponent SupplierListComponent
+     */
     public SupplierListController(StockController stockController, SupplierListComponent supplierListComponent) {
         this.stockController = stockController;
         this.supplierListComponent = supplierListComponent;
@@ -26,6 +34,9 @@ public class SupplierListController implements ControllerAction {
         handleActions();
     }
 
+    /**
+     * This method is responsible for handling the actions of the buttons in the supplier list.
+     */
     @Override
     public void handleActions() {
         onEditButtonClicked();

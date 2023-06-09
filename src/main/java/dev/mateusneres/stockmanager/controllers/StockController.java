@@ -10,6 +10,9 @@ import lombok.Getter;
 
 import java.util.List;
 
+/**
+ * This class is responsible for controlling the stock.
+ */
 @Getter
 public class StockController {
 
@@ -21,7 +24,7 @@ public class StockController {
     private final ProductRepository productRepository;
     private final SupplierRepository supplierRepository;
     private final PurchaseProductRepository purchaseProductRepository;
-
+    
     public StockController() {
         this.userRepository = new UserRepository();
         this.productRepository = new ProductRepository();
@@ -34,6 +37,11 @@ public class StockController {
         this.purchaseProductList = purchaseProductRepository.findAll();
     }
 
+    /**
+     * This method is responsible for return if product is created.
+     * @param product Product
+     * @return boolean
+     */
     public boolean createProduct(Product product) {
         Product productCreated = productRepository.createProduct(product);
         if (productCreated == null) return false;
@@ -42,6 +50,10 @@ public class StockController {
         return true;
     }
 
+    /**
+     * This method is responsible for update product.
+     * @param product Product
+     */
     public void updateProduct(Product product) {
         productRepository.updateProduct(product);
 
@@ -53,6 +65,11 @@ public class StockController {
         getProductList().add(product);
     }
 
+    /**
+     * This method is responsible for return if supplier is created.
+     * @param supplier Supplier
+     * @return boolean
+     */
     public boolean createSupplier(Supplier supplier) {
         Supplier supplierCreated = supplierRepository.createSupplier(supplier);
         if (supplierCreated == null) return false;
@@ -61,6 +78,10 @@ public class StockController {
         return true;
     }
 
+    /**
+     * This method is responsible for update supplier.
+     * @param supplier Supplier
+     */
     public void updateSupplier(Supplier supplier) {
         supplierRepository.updateSupplier(supplier);
 
@@ -71,7 +92,12 @@ public class StockController {
         getSupplierList().removeIf(supplier1 -> supplier1.getId() == supplier.getId());
         getSupplierList().add(supplier);
     }
-    
+
+    /**
+     * This method is responsible for return if purchase product is created.
+     * @param purchaseProduct PurchaseProduct
+     * @return boolean
+     */
     public boolean createPurchaseProduct(PurchaseProduct purchaseProduct) {
         Purchase createdPurchase = purchaseProductRepository.createPurchase(purchaseProduct.getPurchase());
         if (createdPurchase == null) return false;
@@ -85,6 +111,10 @@ public class StockController {
         return true;
     }
 
+    /**
+     * This method is responsible for update purchase product.
+     * @param purchaseProduct PurchaseProduct
+     */
     public void updatePurchase(PurchaseProduct purchaseProduct) {
         purchaseProductRepository.updatePurchase(purchaseProduct.getPurchase());
         purchaseProductRepository.updatePurchaseProduct(purchaseProduct);
@@ -93,6 +123,10 @@ public class StockController {
         getPurchaseProductList().add(purchaseProduct);
     }
 
+    /**
+     * This method is responsible for return get data table of purchases.
+     * @return String[][]
+     */
     public String[][] getPurchasesDataTable() {
         String[][] data = new String[purchaseProductList.size()][6];
 
@@ -109,10 +143,18 @@ public class StockController {
         return data;
     }
 
+    /**
+     * This method is responsible for return get suppliers with id.
+     * @return String[]
+     */
     public String[] getSupplierWithID(){
         return supplierList.stream().map(supplier -> supplier.getId() + " - " + supplier.getName()).toArray(String[]::new);
     }
 
+    /**
+     * This method is responsible for return get products data table.
+     * @return String[][]
+     */
     public String[][] getProductsDataTable(){
         String[][] data = new String[productList.size()][4];
 
@@ -127,10 +169,18 @@ public class StockController {
         return data;
     }
 
+    /**
+     * This method is responsible for return get products with id.
+     * @return String[]
+     */
     public String[] getProductsWithID(){
         return productList.stream().map(product -> product.getId() + " - " + product.getName() + " - R$ " + product.getPrice()).toArray(String[]::new);
     }
 
+    /**
+     * This method is responsible for return get suppliers data table.
+     * @return String[][]
+     */
     public String[][] getSupplierDataTable(){
         String[][] data = new String[supplierList.size()][4];
 

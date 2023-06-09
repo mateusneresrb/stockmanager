@@ -5,8 +5,16 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * This class is responsible for formatting the date and time.
+ */
 public class DateUtil {
 
+    /**
+     * This method is responsible for formatting the instant.
+     * @param instant Instant
+     * @return String
+     */
     public static String formatInstant(Instant instant) {
         String timeZone = "America/Sao_Paulo";
 

@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Logger;
 
+/**
+ * This class is responsible for managing the MySQL connection.
+ */
 public class MySQLManager {
 
     private static MySQLManager instance;
@@ -29,6 +32,9 @@ public class MySQLManager {
         }
     }
 
+    /**
+     * This method is responsible for init the tables in the database.
+     */
     public void initTables() {
         try (Connection conn = getConnection(); Statement statement = conn.createStatement()) {
             statement.addBatch("CREATE TABLE IF NOT EXISTS `users` ( `userID` VARCHAR(36) NOT NULL, `name` VARCHAR(45) NOT NULL, `email` VARCHAR(45) UNIQUE NOT NULL, `password` VARCHAR(60) NOT NULL, `nonce` VARCHAR(20) NOT NULL, PRIMARY KEY (`userID`))");
@@ -43,6 +49,10 @@ public class MySQLManager {
         }
     }
 
+    /**
+     * This method is responsible for returning the instance of the MySQLManager.
+     * @return MySQLManager
+     */
     public static synchronized MySQLManager getInstance() {
         try {
             if (instance == null || instance.getConnection() == null || instance.getConnection().isClosed()) {
@@ -56,6 +66,10 @@ public class MySQLManager {
         return instance;
     }
 
+    /**
+     * This method is responsible for returning the connection.
+     * @return Connection
+     */
     public Connection getConnection() {
         return connection;
     }

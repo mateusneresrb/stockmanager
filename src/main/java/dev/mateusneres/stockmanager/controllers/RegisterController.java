@@ -10,12 +10,20 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Arrays;
 
+/**
+ * This class is responsible for controlling the register screen.
+ */
 public class RegisterController implements ControllerAction{
 
     private final StockController stockController;
     private final SignUpScreen signUpScreen;
     private final UserRepository userRepository;
 
+    /**
+     * Constructor
+     * @param stockController StockController
+     * @param signUpScreen SignUpScreen
+     */
     public RegisterController(StockController stockController, SignUpScreen signUpScreen) {
         this.stockController = stockController;
         this.signUpScreen = signUpScreen;
@@ -24,6 +32,9 @@ public class RegisterController implements ControllerAction{
         handleActions();
     }
 
+    /**
+     * This method is responsible for handling the actions of the buttons in the register screen.
+     */
     @Override
     public void handleActions() {
         onRegisterButtonClicked();

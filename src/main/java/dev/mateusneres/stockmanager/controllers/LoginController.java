@@ -11,12 +11,20 @@ import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+/**
+ * This class is responsible for controlling the login screen.
+ */
 public class LoginController implements ControllerAction{
 
     private final StockController stockController;
     private final LoginScreen loginScreen;
     private final UserRepository userRepository;
 
+    /**
+     * Constructor
+     * @param stockController StockController
+     * @param loginScreen LoginScreen
+     */
     public LoginController(StockController stockController, LoginScreen loginScreen) {
         this.stockController = stockController;
         this.loginScreen = loginScreen;
@@ -25,6 +33,10 @@ public class LoginController implements ControllerAction{
         handleActions();
     }
 
+    /**
+     * This method is responsible for handling the actions of the buttons in the login screen.
+     */
+    @Override
     public void handleActions() {
         onLoginButtonClicked();
         onSignUpLabelClicked();

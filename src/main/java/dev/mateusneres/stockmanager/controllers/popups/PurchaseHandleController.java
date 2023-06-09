@@ -14,11 +14,19 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.time.Instant;
 
+/**
+ * This class is responsible for controlling the popup purchase.
+ */
 public class PurchaseHandleController implements ControllerAction {
 
     private final StockController stockController;
     private final PurchaseHandleComponent productHandleComponent;
 
+    /**
+     * Constructor
+     * @param stockController StockController
+     * @param purchaseHandleComponent PurchaseHandleComponent
+     */
     public PurchaseHandleController(StockController stockController, PurchaseHandleComponent purchaseHandleComponent) {
         this.stockController = stockController;
         this.productHandleComponent = purchaseHandleComponent;
@@ -26,6 +34,9 @@ public class PurchaseHandleController implements ControllerAction {
         handleActions();
     }
 
+    /**
+     * This method is responsible for handling the actions of the buttons in the purchase.
+     */
     @Override
     public void handleActions() {
         onButtonClickEvent();
