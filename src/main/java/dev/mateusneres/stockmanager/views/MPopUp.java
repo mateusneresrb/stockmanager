@@ -31,11 +31,13 @@ public class MPopUp extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowIconified(WindowEvent e) {
+                if (e.getOppositeWindow() instanceof JDialog) return;
                 disposeAndUpdate();
             }
 
             @Override
             public void windowDeactivated(WindowEvent e) {
+                if (e.getOppositeWindow() instanceof JDialog) return;
                 disposeAndUpdate();
             }
 
