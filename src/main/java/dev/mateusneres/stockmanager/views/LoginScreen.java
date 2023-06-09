@@ -6,18 +6,15 @@ import org.jdesktop.swingx.VerticalLayout;
 import javax.swing.*;
 import java.awt.*;
 
+@Getter
 public class LoginScreen extends JFrame {
 
     private final JLabel titleLabel;
     private final JLabel emailLabel;
     private final JLabel passwordLabel;
-    @Getter
     private final JTextField emailField;
-    @Getter
     private final JPasswordField passwordField;
-    @Getter
     private final JLabel signUpLabel;
-    @Getter
     private final JButton button;
     private final Point frameLocation;
 

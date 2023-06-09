@@ -8,9 +8,9 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+@Getter
 public class MPopUp extends JFrame {
 
-    @Getter
     private final transient HomeController homeController;
 
     public MPopUp(String name, HomeController homeController) {

@@ -13,23 +13,18 @@ import javax.swing.border.Border;
 import javax.swing.text.AbstractDocument;
 import java.awt.*;
 
+@Getter
 public class ProductHandleComponent extends MPopUp {
 
     private final JLabel titleLabel;
-    @Getter
     private final JLabel idLabel;
     private final JLabel nameLabel;
     private final JLabel priceLabel;
     private final JLabel amountLabel;
-    @Getter
     private final JTextField nameField;
-    @Getter
     private final JTextField priceField;
-    @Getter
     private final JFormattedTextField amountField;
-    @Getter
     private final JButton confirmButton;
-    @Getter
     private final OperationType operationType;
 
     public ProductHandleComponent(HomeController homeController, OperationType operationType, Product product) {

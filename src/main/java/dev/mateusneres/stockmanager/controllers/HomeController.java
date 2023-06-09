@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class HomeController {
+public class HomeController implements ControllerAction{
 
     private final StockController stockController;
     private final HomeScreen homeScreen;
@@ -32,7 +32,8 @@ public class HomeController {
         handleActions();
     }
 
-    private void handleActions() {
+    @Override
+    public void handleActions() {
         onLogoutClicked();
         onSearchFieldChanged();
         onAddButtonClicked();
@@ -119,10 +120,9 @@ public class HomeController {
             @Override
             public void mouseClicked(MouseEvent e) {
                 homeScreen.dispose();
-                stockController.logout();
 
                 LoginScreen loginScreen = new LoginScreen(null);
-                new LoginController(loginScreen);
+                new LoginController(stockController, loginScreen);
             }
 
             @Override

@@ -1,9 +1,11 @@
 package dev.mateusneres.stockmanager.models;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @AllArgsConstructor
+@Builder
 @Data
 public class PurchaseProduct {
 

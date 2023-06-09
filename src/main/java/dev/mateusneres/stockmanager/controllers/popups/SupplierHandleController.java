@@ -4,7 +4,6 @@ import dev.mateusneres.stockmanager.controllers.ControllerAction;
 import dev.mateusneres.stockmanager.controllers.StockController;
 import dev.mateusneres.stockmanager.enums.OperationType;
 import dev.mateusneres.stockmanager.models.Supplier;
-import dev.mateusneres.stockmanager.repositories.SupplierRepository;
 import dev.mateusneres.stockmanager.views.components.SupplierHandleComponent;
 
 import javax.swing.*;
@@ -13,12 +12,10 @@ public class SupplierHandleController implements ControllerAction {
 
     private final StockController stockController;
     private final SupplierHandleComponent productHandleComponent;
-    private final SupplierRepository supplierRepository;
 
     public SupplierHandleController(StockController stockController, SupplierHandleComponent supplierHandleComponent) {
         this.stockController = stockController;
         this.productHandleComponent = supplierHandleComponent;
-        this.supplierRepository = new SupplierRepository();
 
         handleActions();
     }
@@ -46,7 +43,7 @@ public class SupplierHandleController implements ControllerAction {
             }
 
             if (idLabel.isEmpty() && productHandleComponent.getOperationType() == OperationType.CREATE) {
-                boolean isCreated = createSupplier(new Supplier(name, address, phone));
+                boolean isCreated = stockController.createSupplier(new Supplier(name, address, phone));
                 if (!isCreated) {
                     JOptionPane.showMessageDialog(productHandleComponent.getNameField(), "Error: Unable to create supplier!", "Error in supplier create!", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -57,29 +54,11 @@ public class SupplierHandleController implements ControllerAction {
                 return;
             }
 
-            updateSupplier(new Supplier(Integer.parseInt(idLabel), name, address, phone));
+            stockController.updateSupplier(new Supplier(Integer.parseInt(idLabel), name, address, phone));
             JOptionPane.showMessageDialog(productHandleComponent.getNameField(), "A supplier " + name + " has been updated!", "Supplier is updated!", JOptionPane.INFORMATION_MESSAGE);
             productHandleComponent.dispose();
         });
     }
 
-    private boolean createSupplier(Supplier supplier) {
-        Supplier supplierCreated = supplierRepository.createSupplier(supplier);
-        if (supplierCreated == null) return false;
-
-        stockController.getSupplierList().add(supplierCreated);
-        return true;
-    }
-
-    private void updateSupplier(Supplier supplier) {
-        supplierRepository.updateSupplier(supplier);
-
-        stockController.getPurchaseProductList().stream()
-                .filter(purchaseProduct -> purchaseProduct.getSupplier().getId() == supplier.getId())
-                .forEach(purchaseProduct -> purchaseProduct.setSupplier(supplier));
-
-        stockController.getSupplierList().removeIf(supplier1 -> supplier1.getId() == supplier.getId());
-        stockController.getSupplierList().add(supplier);
-    }
 
 }

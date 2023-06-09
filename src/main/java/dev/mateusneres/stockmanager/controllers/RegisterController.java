@@ -10,19 +10,22 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Arrays;
 
-public class RegisterController {
+public class RegisterController implements ControllerAction{
 
+    private final StockController stockController;
     private final SignUpScreen signUpScreen;
     private final UserRepository userRepository;
 
-    public RegisterController(SignUpScreen signUpScreen) {
+    public RegisterController(StockController stockController, SignUpScreen signUpScreen) {
+        this.stockController = stockController;
         this.signUpScreen = signUpScreen;
         this.userRepository = new UserRepository();
 
         handleActions();
     }
 
-    private void handleActions() {
+    @Override
+    public void handleActions() {
         onRegisterButtonClicked();
         onSignInLabelClicked();
     }
@@ -60,7 +63,7 @@ public class RegisterController {
             signUpScreen.dispose();
 
             LoginScreen loginScreen = new LoginScreen(signUpScreen.getLocation());
-            new LoginController(loginScreen);
+            new LoginController(stockController, loginScreen);
         });
     }
 
@@ -72,7 +75,7 @@ public class RegisterController {
                 signUpScreen.dispose();
 
                 LoginScreen loginScreen = new LoginScreen(signUpScreen.getLocation());
-                new LoginController(loginScreen);
+                new LoginController(stockController, loginScreen);
             }
 
             @Override

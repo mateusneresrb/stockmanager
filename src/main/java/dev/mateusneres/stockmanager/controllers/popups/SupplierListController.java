@@ -1,5 +1,6 @@
 package dev.mateusneres.stockmanager.controllers.popups;
 
+import dev.mateusneres.stockmanager.controllers.ControllerAction;
 import dev.mateusneres.stockmanager.controllers.StockController;
 import dev.mateusneres.stockmanager.enums.OperationType;
 import dev.mateusneres.stockmanager.models.Supplier;
@@ -11,7 +12,7 @@ import org.jdesktop.swingx.JXTable;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-public class SupplierListController {
+public class SupplierListController implements ControllerAction {
 
     private final StockController stockController;
     private final SupplierListComponent supplierListComponent;
@@ -25,7 +26,8 @@ public class SupplierListController {
         handleActions();
     }
 
-    private void handleActions() {
+    @Override
+    public void handleActions() {
         onEditButtonClicked();
         onDeleteButtonClicked();
     }

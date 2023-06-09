@@ -39,7 +39,6 @@ public class SplashScreen extends JFrame {
         setUndecorated(true);
         setLocationRelativeTo(null);
         setVisible(true);
-        setAlwaysOnTop(true);
     }
 
     public void showSplashScreen() {

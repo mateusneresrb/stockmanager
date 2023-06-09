@@ -7,11 +7,11 @@ import java.util.Base64;
 
 public class PasswordHasher {
 
-    public static String encodePassword(char[] password, String nonce){
+    public static String encodePassword(char[] password){
         return BCrypt.withDefaults().hashToString(10, password);
     }
 
-    public static boolean checkPassword(char[] password, String hash, String nonce){
+    public static boolean checkPassword(char[] password, String hash){
         BCrypt.Result result = BCrypt.verifyer().verify(password, hash);
         return result.verified;
     }

@@ -14,26 +14,20 @@ import javax.swing.border.Border;
 import javax.swing.text.AbstractDocument;
 import java.awt.*;
 
+@Getter
 public class PurchaseHandleComponent extends MPopUp {
 
     private final JLabel titleLabel;
-    @Getter
     private final JLabel idLabel;
     private final JLabel productLabel;
     private final JLabel supplierLabel;
     private final JLabel amountLabel;
     private final JLabel totalPriceLabel;
-    @Getter
     private final JComboBox productComboBox;
-    @Getter
     private final JComboBox supplierComboBox;
-    @Getter
     private final JTextField amountField;
-    @Getter
     private final JLabel totalPriceResult;
-    @Getter
     private final JButton confirmButton;
-    @Getter
     private final OperationType operationType;
 
     @SneakyThrows

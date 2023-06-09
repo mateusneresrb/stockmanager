@@ -1,5 +1,6 @@
 package dev.mateusneres.stockmanager.database;
 
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -10,9 +11,9 @@ public class MySQLManager {
 
     private static MySQLManager instance;
     private Connection connection;
-    private String url = "jdbc:mysql://localhost:3306/stockmanager";
-    private String username = "root";
-    private String password = "password";
+    private final String url = "jdbc:mysql://localhost:3306/stockmanager";
+    private final String username = "root";
+    private final String password = "password";
 
     private MySQLManager() {
         try {
@@ -22,6 +23,7 @@ public class MySQLManager {
         } catch (ClassNotFoundException ex) {
             Logger.getGlobal().severe("Something is wrong with the DB connection String: " + ex.getMessage());
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "There was a problem with the database connection: " + e.getMessage(), "Error on MySQL connection!", JOptionPane.ERROR_MESSAGE);
             Logger.getGlobal().severe("There was a problem with the database connection: " + e.getMessage());
         }
     }
@@ -47,6 +49,7 @@ public class MySQLManager {
             }
         } catch (SQLException e) {
             Logger.getGlobal().severe("There was a problem with the database connection: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "There was a problem with the database connection: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
 
         return instance;

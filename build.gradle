@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.0'
 }
 
 group 'dev.mateusneres'
@@ -8,7 +9,6 @@ version '1.0-SNAPSHOT'
 repositories {
     mavenCentral()
 }
-
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -32,4 +32,8 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+shadowJar {
+    mergeServiceFiles()
 }

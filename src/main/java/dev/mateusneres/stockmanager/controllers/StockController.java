@@ -1,9 +1,6 @@
 package dev.mateusneres.stockmanager.controllers;
 
-import dev.mateusneres.stockmanager.models.Product;
-import dev.mateusneres.stockmanager.models.PurchaseProduct;
-import dev.mateusneres.stockmanager.models.Supplier;
-import dev.mateusneres.stockmanager.models.User;
+import dev.mateusneres.stockmanager.models.*;
 import dev.mateusneres.stockmanager.repositories.ProductRepository;
 import dev.mateusneres.stockmanager.repositories.PurchaseProductRepository;
 import dev.mateusneres.stockmanager.repositories.SupplierRepository;
@@ -16,7 +13,6 @@ import java.util.List;
 @Getter
 public class StockController {
 
-    private User loggedUser;
     private final List<Product> productList;
     private final List<Supplier> supplierList;
     private final List<PurchaseProduct> purchaseProductList;
@@ -26,9 +22,7 @@ public class StockController {
     private final SupplierRepository supplierRepository;
     private final PurchaseProductRepository purchaseProductRepository;
 
-    public StockController(User user) {
-        this.loggedUser = user;
-
+    public StockController() {
         this.userRepository = new UserRepository();
         this.productRepository = new ProductRepository();
         this.supplierRepository = new SupplierRepository();
@@ -40,6 +34,64 @@ public class StockController {
         this.purchaseProductList = purchaseProductRepository.findAll();
     }
 
+    public boolean createProduct(Product product) {
+        Product productCreated = productRepository.createProduct(product);
+        if (productCreated == null) return false;
+
+        getProductList().add(productCreated);
+        return true;
+    }
+
+    public void updateProduct(Product product) {
+        productRepository.updateProduct(product);
+
+        getPurchaseProductList().stream()
+                .filter(product1 -> product1.getProduct().getId() == product.getId())
+                .forEach(product1 -> product1.setProduct(product));
+
+        getProductList().removeIf(product1 -> product1.getId() == product.getId());
+        getProductList().add(product);
+    }
+
+    public boolean createSupplier(Supplier supplier) {
+        Supplier supplierCreated = supplierRepository.createSupplier(supplier);
+        if (supplierCreated == null) return false;
+
+        getSupplierList().add(supplierCreated);
+        return true;
+    }
+
+    public void updateSupplier(Supplier supplier) {
+        supplierRepository.updateSupplier(supplier);
+
+        getPurchaseProductList().stream()
+                .filter(purchaseProduct -> purchaseProduct.getSupplier().getId() == supplier.getId())
+                .forEach(purchaseProduct -> purchaseProduct.setSupplier(supplier));
+
+        getSupplierList().removeIf(supplier1 -> supplier1.getId() == supplier.getId());
+        getSupplierList().add(supplier);
+    }
+    
+    public boolean createPurchaseProduct(PurchaseProduct purchaseProduct) {
+        Purchase createdPurchase = purchaseProductRepository.createPurchase(purchaseProduct.getPurchase());
+        if (createdPurchase == null) return false;
+
+        PurchaseProduct createPurchase = purchaseProductRepository.createPurchaseProduct(
+                purchaseProduct.getProduct(), createdPurchase,
+                purchaseProduct.getSupplier(), purchaseProduct.getQuantity());
+        if (createPurchase == null) return false;
+
+        getPurchaseProductList().add(createPurchase);
+        return true;
+    }
+
+    public void updatePurchase(PurchaseProduct purchaseProduct) {
+        purchaseProductRepository.updatePurchase(purchaseProduct.getPurchase());
+        purchaseProductRepository.updatePurchaseProduct(purchaseProduct);
+
+        getPurchaseProductList().removeIf(purchaseProduct1 -> purchaseProduct1.getId() == purchaseProduct.getId());
+        getPurchaseProductList().add(purchaseProduct);
+    }
 
     public String[][] getPurchasesDataTable() {
         String[][] data = new String[purchaseProductList.size()][6];
@@ -92,10 +144,5 @@ public class StockController {
 
         return data;
     }
-
-    public void logout() {
-        loggedUser = null;
-    }
-
 
 }

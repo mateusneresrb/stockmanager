@@ -15,23 +15,18 @@ import javax.swing.text.AbstractDocument;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
 
+@Getter
 public class SupplierHandleComponent extends MPopUp {
 
     private final JLabel titleLabel;
-    @Getter
     private final JLabel idLabel;
     private final JLabel nameLabel;
     private final JLabel addressLabel;
     private final JLabel phoneLabel;
-    @Getter
     private final JTextField nameField;
-    @Getter
     private final JTextField addressField;
-    @Getter
     private final JFormattedTextField phoneField;
-    @Getter
     private final JButton confirmButton;
-    @Getter
     private final OperationType operationType;
 
     @SneakyThrows

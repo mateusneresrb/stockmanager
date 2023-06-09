@@ -1,8 +1,8 @@
 package dev.mateusneres.stockmanager.repositories;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import dev.mateusneres.stockmanager.database.MySQLManager;
 import dev.mateusneres.stockmanager.models.User;
+import dev.mateusneres.stockmanager.utils.EmailValidator;
 import dev.mateusneres.stockmanager.utils.PasswordHasher;
 
 import java.sql.Connection;
@@ -28,7 +28,7 @@ public class UserRepository {
 
                     String passwordWithNonce = new String(password) + storedNonce;
 
-                    if (BCrypt.verifyer().verify(passwordWithNonce.toCharArray(), storedHash.toCharArray()).verified) {
+                    if (PasswordHasher.checkPassword(passwordWithNonce.toCharArray(), storedHash)) {
                         return new User(
                                 userID, resultSet.getString("name"),
                                 email, storedHash, storedNonce);
@@ -87,12 +87,13 @@ public class UserRepository {
     public boolean register(String name, String email, char[] password) {
         String query = "INSERT INTO users (userID, name, email, password, nonce) VALUES (?, ?, ?, ?, ?)";
 
+        if (!EmailValidator.validateEmail(email)) return false;
         if (isAccountExists(email)) return false;
         try (Connection connection = MySQLManager.getInstance().getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             String nonce = PasswordHasher.generateNonce();
 
             String passwordWithNonce = new String(password) + nonce;
-            String hashedPassword = BCrypt.withDefaults().hashToString(10, passwordWithNonce.toCharArray());
+            String hashedPassword = PasswordHasher.encodePassword(passwordWithNonce.toCharArray());
 
             preparedStatement.setString(1, String.valueOf(UUID.randomUUID()));
             preparedStatement.setString(2, name);

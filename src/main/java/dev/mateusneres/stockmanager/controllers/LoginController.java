@@ -11,19 +11,21 @@ import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class LoginController {
+public class LoginController implements ControllerAction{
 
+    private final StockController stockController;
     private final LoginScreen loginScreen;
     private final UserRepository userRepository;
 
-    public LoginController(LoginScreen loginScreen) {
+    public LoginController(StockController stockController, LoginScreen loginScreen) {
+        this.stockController = stockController;
         this.loginScreen = loginScreen;
         this.userRepository = new UserRepository();
 
         handleActions();
     }
 
-    private void handleActions() {
+    public void handleActions() {
         onLoginButtonClicked();
         onSignUpLabelClicked();
     }
@@ -50,7 +52,7 @@ public class LoginController {
             }
 
             loginScreen.dispose();
-            StockController stockController = new StockController(user);
+
             HomeScreen homeScreen = new HomeScreen(null, stockController.getPurchasesDataTable());
             new HomeController(stockController, homeScreen);
         });
@@ -64,7 +66,7 @@ public class LoginController {
                 loginScreen.dispose();
 
                 SignUpScreen signUpScreen = new SignUpScreen(loginScreen.getLocation());
-                new RegisterController(signUpScreen);
+                new RegisterController(stockController, signUpScreen);
             }
 
             @Override

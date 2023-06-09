@@ -7,7 +7,6 @@ import dev.mateusneres.stockmanager.models.Product;
 import dev.mateusneres.stockmanager.models.Purchase;
 import dev.mateusneres.stockmanager.models.PurchaseProduct;
 import dev.mateusneres.stockmanager.models.Supplier;
-import dev.mateusneres.stockmanager.repositories.PurchaseProductRepository;
 import dev.mateusneres.stockmanager.views.components.PurchaseHandleComponent;
 
 import javax.swing.*;
@@ -19,12 +18,10 @@ public class PurchaseHandleController implements ControllerAction {
 
     private final StockController stockController;
     private final PurchaseHandleComponent productHandleComponent;
-    private final PurchaseProductRepository purchaseProductRepository;
 
     public PurchaseHandleController(StockController stockController, PurchaseHandleComponent purchaseHandleComponent) {
         this.stockController = stockController;
         this.productHandleComponent = purchaseHandleComponent;
-        this.purchaseProductRepository = new PurchaseProductRepository();
 
         handleActions();
     }
@@ -59,7 +56,7 @@ public class PurchaseHandleController implements ControllerAction {
 
             if (idLabel.isEmpty() && productHandleComponent.getOperationType() == OperationType.CREATE) {
                 Purchase createdPurchase = new Purchase(Instant.now(), totalPrice, supplier);
-                boolean isCreated = createPurchase(new PurchaseProduct(product, createdPurchase, supplier, Integer.parseInt(amount)));
+                boolean isCreated = stockController.createPurchaseProduct(new PurchaseProduct(product, createdPurchase, supplier, Integer.parseInt(amount)));
                 if (!isCreated) {
                     JOptionPane.showMessageDialog(productHandleComponent.getProductComboBox(), "Error: Unable to create purchase!", "Error in purchase create!", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -73,7 +70,7 @@ public class PurchaseHandleController implements ControllerAction {
             PurchaseProduct purchaseProduct = stockController.getPurchaseProductList().stream().filter(purchaseProduct1 -> purchaseProduct1.getId() == Integer.parseInt(idLabel)).findFirst().orElse(null);
             Purchase purchase = new Purchase(purchaseProduct.getId(), Instant.now(), totalPrice, supplier);
 
-            updatePurchase(new PurchaseProduct(Integer.parseInt(idLabel), product, purchase, supplier, Integer.parseInt(amount)));
+            stockController.updatePurchase(new PurchaseProduct(Integer.parseInt(idLabel), product, purchase, supplier, Integer.parseInt(amount)));
             JOptionPane.showMessageDialog(productHandleComponent.getProductComboBox(), "Purchase has been updated!", "Purchase is updated!", JOptionPane.INFORMATION_MESSAGE);
             productHandleComponent.dispose();
         });
@@ -112,26 +109,6 @@ public class PurchaseHandleController implements ControllerAction {
         });
     }
 
-    private boolean createPurchase(PurchaseProduct purchaseProduct) {
-        Purchase createdPurchase = purchaseProductRepository.createPurchase(purchaseProduct.getPurchase());
-        if (createdPurchase == null) return false;
-
-        PurchaseProduct createPurchase = purchaseProductRepository.createPurchaseProduct(
-                purchaseProduct.getProduct(), createdPurchase,
-                purchaseProduct.getSupplier(), purchaseProduct.getQuantity());
-        if (createPurchase == null) return false;
-
-        stockController.getPurchaseProductList().add(createPurchase);
-        return true;
-    }
-
-    private void updatePurchase(PurchaseProduct purchaseProduct) {
-        purchaseProductRepository.updatePurchase(purchaseProduct.getPurchase());
-        purchaseProductRepository.updatePurchaseProduct(purchaseProduct);
-
-        stockController.getPurchaseProductList().removeIf(purchaseProduct1 -> purchaseProduct1.getId() == purchaseProduct.getId());
-        stockController.getPurchaseProductList().add(purchaseProduct);
-    }
 
     private Product getProductBySelection(Object productSelected) {
         int productID = Integer.parseInt(productSelected.toString().split(" - ")[0]);
@@ -142,5 +119,6 @@ public class PurchaseHandleController implements ControllerAction {
         int supplierID = Integer.parseInt(supplierSelected.toString().split(" - ")[0]);
         return stockController.getSupplierList().stream().filter(supplier1 -> supplier1.getId() == supplierID).findFirst().orElse(null);
     }
+
 
 }

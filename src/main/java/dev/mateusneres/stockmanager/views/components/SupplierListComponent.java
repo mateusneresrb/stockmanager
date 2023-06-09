@@ -12,13 +12,12 @@ import org.jdesktop.swingx.decorator.HighlighterFactory;
 import javax.swing.*;
 import java.awt.*;
 
+@Getter
 public class SupplierListComponent extends MPopUp {
 
     private final String[] columnNames = {"ID", "Name", "Address", "Phone", "Edit", "Delete"};
     private final JXTable table;
-    @Getter
     private final JButton editButton;
-    @Getter
     private final JButton deleteButton;
 
     public SupplierListComponent(HomeController homeController, String[][] data) {

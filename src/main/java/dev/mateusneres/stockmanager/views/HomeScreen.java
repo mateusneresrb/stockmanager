@@ -18,22 +18,17 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 
+@Getter
 public class HomeScreen extends JFrame {
 
     private final String[] columnNames = {"ID", "Produto", "Supplier", "Quantity", "Price", "Date", "Edit", "Delete"};
-    @Getter
     private final JLabel logoutLabel;
-    @Getter
     private final JTextField searchField;
-    @Getter
     private final JButton addButton;
-    @Getter
     private final transient TableRowSorter<DefaultTableModel> rowSorter;
     private final JLabel appLogoLabel;
     private final JXTable table;
-    @Getter
     private final JButton editButton;
-    @Getter
     private final JButton deleteButton;
 
     private final Point frameLocation;
