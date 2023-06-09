@@ -11,13 +11,14 @@ public class MySQLManager {
 
     private static MySQLManager instance;
     private Connection connection;
-    private final String url = "jdbc:mysql://localhost:3306/stockmanager";
-    private final String username = "root";
-    private final String password = "password";
 
     private MySQLManager() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
+
+            String url = "jdbc:mysql://localhost:3306/stockmanager";
+            String username = "admin";
+            String password = "stockmanager1234";
             this.connection = DriverManager.getConnection(url, username, password);
 
         } catch (ClassNotFoundException ex) {
