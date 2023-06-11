@@ -1,6 +1,7 @@
 package dev.mateusneres.stockmanager.views;
 
 import dev.mateusneres.stockmanager.enums.ButtonType;
+import dev.mateusneres.stockmanager.utils.IconUtil;
 import dev.mateusneres.stockmanager.views.components.MImage;
 import dev.mateusneres.stockmanager.views.hooks.ButtonEditor;
 import dev.mateusneres.stockmanager.views.hooks.ButtonRenderer;
@@ -35,6 +36,8 @@ public class HomeScreen extends JFrame {
 
     public HomeScreen(Point frameLocation, String[][] data) {
         super("StockManager - Home");
+        IconUtil.setIcon(this);
+
         this.frameLocation = frameLocation;
 
         appLogoLabel = new JLabel("StockManager");

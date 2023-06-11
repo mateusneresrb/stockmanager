@@ -1,5 +1,6 @@
 package dev.mateusneres.stockmanager.views;
 
+import dev.mateusneres.stockmanager.utils.IconUtil;
 import lombok.Getter;
 import org.jdesktop.swingx.VerticalLayout;
 
@@ -24,6 +25,8 @@ public class SignUpScreen extends JFrame {
 
     public SignUpScreen(Point frameLocation) {
         super("StockManager - SignUP");
+        IconUtil.setIcon(this);
+
         this.frameLocation = frameLocation;
 
         titleLabel = new JLabel("Register your account!");

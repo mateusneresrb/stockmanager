@@ -1,5 +1,6 @@
 package dev.mateusneres.stockmanager.views;
 
+import dev.mateusneres.stockmanager.utils.IconUtil;
 import lombok.Getter;
 import org.jdesktop.swingx.VerticalLayout;
 
@@ -20,6 +21,8 @@ public class LoginScreen extends JFrame {
 
     public LoginScreen(Point frameLocation) {
         super("StockManager - SignIn");
+        IconUtil.setIcon(this);
+
         this.frameLocation = frameLocation;
 
         titleLabel = new JLabel("SignIn");

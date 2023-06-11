@@ -1,5 +1,6 @@
 package dev.mateusneres.stockmanager.views;
 
+import dev.mateusneres.stockmanager.utils.IconUtil;
 import org.jdesktop.swingx.VerticalLayout;
 
 import javax.swing.*;
@@ -12,6 +13,7 @@ public class SplashScreen extends JFrame {
 
     public SplashScreen() {
         super("StockManager - Home");
+        IconUtil.setIcon(this);
 
         appLogoLabel = new JLabel("StockManager");
         appLogoLabel.setFont(new Font("Arial", Font.BOLD, 25));

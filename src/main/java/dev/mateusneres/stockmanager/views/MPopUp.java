@@ -1,6 +1,7 @@
 package dev.mateusneres.stockmanager.views;
 
 import dev.mateusneres.stockmanager.controllers.HomeController;
+import dev.mateusneres.stockmanager.utils.IconUtil;
 import lombok.Getter;
 
 import javax.swing.*;
@@ -15,6 +16,7 @@ public class MPopUp extends JFrame {
 
     public MPopUp(String name, HomeController homeController) {
         super(name);
+        IconUtil.setIcon(this);
         this.homeController = homeController;
 
         handleListener();
