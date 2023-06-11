@@ -1,0 +1,12 @@
+dev.mateusneres.stockmanager
+dev.mateusneres.stockmanager.controllers
+dev.mateusneres.stockmanager.controllers.popups
+dev.mateusneres.stockmanager.database
+dev.mateusneres.stockmanager.enums
+dev.mateusneres.stockmanager.models
+dev.mateusneres.stockmanager.repositories
+dev.mateusneres.stockmanager.tasks
+dev.mateusneres.stockmanager.utils
+dev.mateusneres.stockmanager.views
+dev.mateusneres.stockmanager.views.components
+dev.mateusneres.stockmanager.views.hooks
