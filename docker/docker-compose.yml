@@ -1,0 +1,14 @@
+version: '3'
+services:
+  mysql:
+    container_name: sm-mysql
+    image: mysql:latest
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: stockmanagerroot423
+      MYSQL_DATABASE: stockmanager
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: stockmanager1234
+    ports:
+      - 3306:3306

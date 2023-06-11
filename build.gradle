@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.0'
 }
 
 group 'dev.mateusneres'
@@ -9,10 +10,17 @@ repositories {
     mavenCentral()
 }
 
-
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java', 'build/generated/source/delombok']
+        }
+    }
 }
 
 dependencies {
@@ -26,9 +34,39 @@ dependencies {
     implementation 'com.formdev:flatlaf-intellij-themes:3.1.1'
     implementation 'com.jgoodies:jgoodies-forms:1.6.0'
     implementation 'org.swinglabs:swingx:1.6.1'
-    implementation 'com.zaxxer:HikariCP:4.0.3'
+    implementation 'mysql:mysql-connector-java:8.0.33'
+    implementation 'at.favre.lib:bcrypt:0.10.2'
 }
+
+task delombok(type: JavaExec) {
+    classpath configurations.compileClasspath
+    main = 'lombok.launch.Main'
+    args = [
+            'delombok',
+            '-d', 'build/generated/source/delombok',
+            'src/main/java'
+    ]
+}
+compileJava.dependsOn delombok
+
+task generateJavadoc(type: Javadoc) {
+    source = fileTree('build/generated/source/delombok')
+    classpath += configurations.compileClasspath
+
+    destinationDir = file('build/docs/javadoc')
+}
+
+task copyJavadoc(type: Copy) {
+    from generateJavadoc.destinationDir
+    into 'docs'
+}
+copyJavadoc.dependsOn generateJavadoc
+
 
 test {
     useJUnitPlatform()
+}
+
+shadowJar {
+    mergeServiceFiles()
 }
