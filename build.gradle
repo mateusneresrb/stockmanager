@@ -47,7 +47,6 @@ task delombok(type: JavaExec) {
             'src/main/java'
     ]
 }
-compileJava.dependsOn delombok
 
 task generateJavadoc(type: Javadoc) {
     source = fileTree('build/generated/source/delombok')
@@ -55,6 +54,7 @@ task generateJavadoc(type: Javadoc) {
 
     destinationDir = file('build/docs/javadoc')
 }
+generateJavadoc.mustRunAfter delombok
 
 task copyJavadoc(type: Copy) {
     from generateJavadoc.destinationDir
