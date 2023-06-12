@@ -3,7 +3,7 @@
 > This is an academic project that aims to create an inventory manager, using java + swing among other tools.
 >
 
-<img src="https://i.imgur.com/uZ8lOyk.gif" alt="Temp gif"/>
+<img src="https://i.imgur.com/naxaJo2.png" alt="stockmanager"/>
 The project is a work of the object-oriented programming discipline and uses good programming practices, among other things.
 
 Documentation: https://mateusneresrb.github.io/stockmanager/
@@ -25,7 +25,6 @@ The project was developed using the technologies and frameworks below:
 * Lombok
 * mysql-connector-java
 * bcrypt
-* JUnit
 * Docker
 
 #### 🛠️ To build follow the steps below:
