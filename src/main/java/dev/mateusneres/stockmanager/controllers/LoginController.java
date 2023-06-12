@@ -57,7 +57,7 @@ public class LoginController implements ControllerAction{
                 return;
             }
 
-            User user = userRepository.loginAngGet(email, password);
+            User user = userRepository.loginAndGet(email, password);
             if (user == null) {
                 JOptionPane.showMessageDialog(loginScreen.getEmailField(), "Error: Invalid email or password!", "Invalid email or password", JOptionPane.ERROR_MESSAGE);
                 return;

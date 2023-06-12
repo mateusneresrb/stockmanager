@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 public class UserRepository {
 
-    public User loginAngGet(String email, char[] password) {
+    public User loginAndGet(String email, char[] password) {
         String query = "SELECT * FROM users WHERE email = ?";
 
         try (Connection connection = MySQLManager.getInstance().getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
